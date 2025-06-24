@@ -1,0 +1,4513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Smart Admin - Interface Révolutionnaire</title>
+</head>
+<body>
+    <!-- Badge Mode Automatique -->
+    <div class="mode-badge" id="mode-badge">🔄 Détection...</div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div>
+            <div class="spinner"></div>
+            <div style="margin-top: 1rem; font-weight: 600; color: var(--gray-700);" id="loading-text">Chargement...</div>
+        </div>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="admin-container">
+        <!-- ===== SIDEBAR RÉVOLUTIONNAIRE ===== -->
+        <aside class="sidebar" id="sidebar">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <span id="toggle-icon">←</span>
+            </button>
+
+            <div class="logo">
+                <div class="logo-icon">🚀</div>
+                <div class="logo-text">Smart Admin</div>
+            </div>
+
+            <nav class="nav">
+                <!-- Section Toujours Visible -->
+                <div class="nav-section">
+                    <div class="nav-title">Configuration</div>
+                    <a class="nav-item active" onclick="showSection('dashboard')" data-section="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Tableau de Bord</span>
+                    </a>
+                    <a class="nav-item" onclick="showSection('identity')" data-section="identity">
+                        <span class="nav-icon">🏷️</span>
+                        <span class="nav-text">Identité du Site</span>
+                    </a>
+                    <a class="nav-item" onclick="showSection('design')" data-section="design">
+                        <span class="nav-icon">🎨</span>
+                        <span class="nav-text">Design & Couleurs</span>
+                    </a>
+                    <a class="nav-item" onclick="showSection('content')" data-section="content">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-text">Contenu</span>
+                    </a>
+                    <a class="nav-item" onclick="showSection('interface')" data-section="interface">
+                        <span class="nav-icon">🔧</span>
+                        <span class="nav-text">Interface</span>
+                    </a>
+                </div>
+
+                <!-- Section Mode Master Seulement -->
+                <div class="nav-section" id="master-nav" style="display: none;">
+                    <div class="nav-title">Gestion Multi-Sites</div>
+                    <a class="nav-item" onclick="showSection('sites')" data-section="sites">
+                        <span class="nav-icon">🌐</span>
+                        <span class="nav-text">Mes Sites</span>
+                        <span class="nav-badge" id="sites-count">0</span>
+                    </a>
+                    <a class="nav-item" onclick="showSection('monitoring')" data-section="monitoring">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-text">Monitoring</span>
+                        <span class="nav-badge">NEW</span>
+                    </a>
+                </div>
+
+                <!-- Section Expert -->
+                <div class="nav-section">
+                    <div class="nav-title">Expert</div>
+                    <a class="nav-item" onclick="showSection('yaml')" data-section="yaml">
+                        <span class="nav-icon">⚡</span>
+                        <span class="nav-text">Mode YAML</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- ===== CONTENU PRINCIPAL ===== -->
+        <main class="main-content">
+            <!-- Header Intelligent -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 id="page-title">Tableau de Bord</h1>
+                    <div class="header-subtitle" id="page-subtitle">Vue d'ensemble de votre site</div>
+                </div>
+                <div class="status-bar">
+                    <div class="status-item">
+                        <div class="status-dot success"></div>
+                        <span>En ligne</span>
+                    </div>
+                    <div class="status-item" id="config-status">
+                        <div class="status-dot warning"></div>
+                        <span>Configuration...</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Contenu -->
+            <div class="content">
+                <!-- ===== DASHBOARD ===== -->
+                <section id="section-dashboard" class="section active">
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="fields-count">88</div>
+                            <div class="stat-label">Champs Configurables</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="modified-count">0</div>
+                            <div class="stat-label">Modifications en Attente</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-sites">1</div>
+                            <div class="stat-label">Sites Gérés</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🚀 Actions Rapides</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <button class="btn btn-primary" onclick="quickEdit('identity')">⚡ Modifier l'Identité</button>
+                                <button class="btn btn-primary" onclick="quickEdit('design')">🎨 Changer les Couleurs</button>
+                                <button class="btn btn-success" onclick="loadConfig()">📥 Recharger la Config</button>
+                                <button class="btn btn-success" onclick="saveAllChanges()" id="save-all-btn">💾 Sauvegarder Tout</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== IDENTITÉ DU SITE ===== -->
+                <section id="section-identity" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📝 Informations Principales <span class="card-badge">6 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Nom du Site
+                                        <div class="label-desc">Le nom principal qui apparaît partout</div>
+                                    </label>
+                                    <input type="text" class="input" id="site.name" data-field="site.name" placeholder="Mon Super Site">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Slogan/Tagline
+                                        <div class="label-desc">Phrase accrocheuse sous le nom</div>
+                                    </label>
+                                    <input type="text" class="input" id="site.tagline" data-field="site.tagline" placeholder="Expert & Créateur">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Description du Site
+                                    <div class="label-desc">Description complète pour le SEO</div>
+                                </label>
+                                <textarea class="input textarea" id="site.description" data-field="site.description" rows="3" placeholder="Décrivez votre site en quelques phrases..."></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Auteur/Propriétaire
+                                        <div class="label-desc">Votre nom ou nom d'entreprise</div>
+                                    </label>
+                                    <input type="text" class="input" id="site.author" data-field="site.author" placeholder="Jean Dupont">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Email de Contact
+                                        <div class="label-desc">Email principal visible publiquement</div>
+                                    </label>
+                                    <input type="email" class="input" id="site.email" data-field="site.email" placeholder="contact@monsite.com">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Langue du Site
+                                    <div class="label-desc">Langue principale du contenu</div>
+                                </label>
+                                <select class="input" id="site.language" data-field="site.language">
+                                    <option value="fr">🇫🇷 Français</option>
+                                    <option value="en">🇺🇸 English</option>
+                                    <option value="es">🇪🇸 Español</option>
+                                    <option value="de">🇩🇪 Deutsch</option>
+                                    <option value="it">🇮🇹 Italiano</option>
+                                    <option value="ar">🇸🇦 العربية</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h2 class="card-title">📱 Réseaux Sociaux <span class="card-badge">7 champs</span></h2>                          
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        📘 Facebook
+                                        <div class="label-desc">URL complète de votre page</div>
+                                    </label>
+                                    <input type="url" class="input" id="social.facebook" data-field="social.facebook" placeholder="https://facebook.com/votre-page">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        📸 Instagram
+                                        <div class="label-desc">URL complète de votre profil</div>
+                                    </label>
+                                    <input type="url" class="input" id="social.instagram" data-field="social.instagram" placeholder="https://instagram.com/votre-profil">
+                                </div>
+                            </div>
+    
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        🐦 Twitter/X
+                                        <div class="label-desc">URL complète de votre profil</div>
+                                    </label>
+                                    <input type="url" class="input" id="social.twitter" data-field="social.twitter" placeholder="https://twitter.com/votre-profil">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        📌 Pinterest
+                                        <div class="label-desc">URL complète de votre profil</div>
+                                    </label>
+                                    <input type="url" class="input" id="social.pinterest" data-field="social.pinterest" placeholder="https://pinterest.com/votre-profil">
+                                </div>
+                            </div>
+    
+                            <h4 style="margin: 2rem 0 1rem; color: var(--gray-700);">Descriptions Réseaux Sociaux</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Description Pinterest
+                                        <div class="label-desc">Texte affiché sous Pinterest</div>
+                                    </label>
+                                    <input type="text" class="input" id="social.social_descriptions.pinterest" data-field="social.social_descriptions.pinterest" placeholder="Épinglez nos recettes">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Description Instagram
+                                        <div class="label-desc">Texte affiché sous Instagram</div>
+                                    </label>
+                                    <input type="text" class="input" id="social.social_descriptions.instagram" data-field="social.social_descriptions.instagram" placeholder="Nos créations visuelles">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="label">
+                                    Description Facebook
+                                    <div class="label-desc">Texte affiché sous Facebook</div>
+                                </label>
+                                <input type="text" class="input" id="social.social_descriptions.facebook" data-field="social.social_descriptions.facebook" placeholder="Rejoignez la communauté">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </section>
+
+                <!-- ===== DESIGN & COULEURS ===== -->
+                <section id="section-design" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🏷️ Image de Marque <span class="card-badge">3 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="label">
+                                    Logo Texte
+                                    <div class="label-desc">Lettre ou texte court (ex: "M" pour "Mario")</div>
+                                </label>
+                                <input type="text" class="input" id="branding.logo_text" data-field="branding.logo_text" placeholder="M" maxlength="3">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre Principal - Ligne 1
+                                        <div class="label-desc">Première ligne du grand titre</div>
+                                    </label>
+                                    <input type="text" class="input" id="branding.hero_title_line1" data-field="branding.hero_title_line1" placeholder="Bienvenue chez">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre Principal - Ligne 2
+                                        <div class="label-desc">Deuxième ligne du grand titre</div>
+                                    </label>
+                                    <input type="text" class="input" id="branding.hero_title_line2" data-field="branding.hero_title_line2" placeholder="Mon Restaurant">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🌈 Palette de Couleurs <span class="card-badge">6 couleurs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row-3">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Couleur Principale
+                                        <div class="label-desc">Couleur de base de votre marque</div>
+                                    </label>
+                                    <input type="color" class="input" id="colors.primary" data-field="colors.primary" value="#6366f1" style="height: 60px;">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Couleur Foncée
+                                        <div class="label-desc">Version foncée (boutons actifs)</div>
+                                    </label>
+                                    <input type="color" class="input" id="colors.primary_dark" data-field="colors.primary_dark" value="#4f46e5" style="height: 60px;">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Couleur Claire
+                                        <div class="label-desc">Version claire (arrière-plans)</div>
+                                    </label>
+                                    <input type="color" class="input" id="colors.primary_light" data-field="colors.primary_light" value="#818cf8" style="height: 60px;">
+                                </div>
+                            </div>
+
+                            <div class="form-row-3">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Couleur Secondaire
+                                        <div class="label-desc">Couleur d'accent</div>
+                                    </label>
+                                    <input type="color" class="input" id="colors.secondary" data-field="colors.secondary" value="#f7f0d8" style="height: 60px;">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Arrière-plan
+                                        <div class="label-desc">Couleur de fond principal</div>
+                                    </label>
+                                    <input type="color" class="input" id="colors.background" data-field="colors.background" value="#ffffff" style="height: 60px;">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Couleur du Texte
+                                        <div class="label-desc">Couleur du texte principal</div>
+                                    </label>
+                                    <input type="color" class="input" id="colors.text" data-field="colors.text" value="#1f2937" style="height: 60px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== CONTENU ===== -->
+                <section id="section-content" class="section">
+                    <!-- Hero Section -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🏠 Page d'Accueil - Hero <span class="card-badge">6 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="label">
+                                    Badge/Étiquette
+                                    <div class="label-desc">Petit texte en haut (ex: "Nouveau", "Offre")</div>
+                                </label>
+                                <input type="text" class="input" id="hero.badge_text" data-field="hero.badge_text" placeholder="Nouveau contenu chaque jour">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre Ligne 1
+                                        <div class="label-desc">Première ligne du titre principal</div>
+                                    </label>
+                                    <input type="text" class="input" id="hero.title_line1" data-field="hero.title_line1" placeholder="Plongez dans">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre Ligne 2
+                                        <div class="label-desc">Deuxième ligne du titre principal</div>
+                                    </label>
+                                    <input type="text" class="input" id="hero.title_line2" data-field="hero.title_line2" placeholder="l'Art de la Cuisine">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Sous-titre Principal
+                                    <div class="label-desc">Description accrocheuse sous le titre</div>
+                                </label>
+                                <textarea class="input textarea" id="hero.subtitle" data-field="hero.subtitle" rows="2" placeholder="Découvrez une expérience exceptionnelle..."></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Mot à Surligner
+                                        <div class="label-desc">Partie du sous-titre à mettre en évidence</div>
+                                    </label>
+                                    <input type="text" class="input" id="hero.subtitle_highlight" data-field="hero.subtitle_highlight" placeholder="expérience exceptionnelle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Texte Bouton Principal
+                                        <div class="label-desc">Action que vous voulez (ex: "Découvrir")</div>
+                                    </label>
+                                    <input type="text" class="input" id="hero.cta_primary_text" data-field="hero.cta_primary_text" placeholder="Surprends-moi !">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- À Propos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">👤 Section À Propos <span class="card-badge">8 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Badge de Section
+                                        <div class="label-desc">Petit texte au-dessus du titre</div>
+                                    </label>
+                                    <input type="text" class="input" id="about_section.badge_text" data-field="about_section.badge_text" placeholder="Rencontrez le chef">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre de Section
+                                        <div class="label-desc">Titre principal de votre présentation</div>
+                                    </label>
+                                    <input type="text" class="input" id="about_section.title" data-field="about_section.title" placeholder="Qui suis-je">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Votre Nom
+                                        <div class="label-desc">Nom complet ou professionnel</div>
+                                    </label>
+                                    <input type="text" class="input" id="about_section.chef_name" data-field="about_section.chef_name" placeholder="Amelia Feuss">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre Philosophie
+                                        <div class="label-desc">Titre de votre approche</div>
+                                    </label>
+                                    <input type="text" class="input" id="about_section.philosophy_title" data-field="about_section.philosophy_title" placeholder="Ma Philosophie">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Introduction Courte
+                                    <div class="label-desc">Phrase de présentation concise</div>
+                                </label>
+                                <textarea class="input textarea" id="about_section.chef_intro" data-field="about_section.chef_intro" rows="2" placeholder="Je m'appelle Amelia, passionnée depuis 15 ans..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Description Complète
+                                    <div class="label-desc">Votre parcours et expérience détaillée</div>
+                                </label>
+                                <textarea class="input textarea" id="about_section.chef_description" data-field="about_section.chef_description" rows="4" placeholder="Mon parcours professionnel..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Votre Philosophie
+                                    <div class="label-desc">Vos valeurs et façon de travailler</div>
+                                </label>
+                                <textarea class="input textarea" id="about_section.philosophy_text" data-field="about_section.philosophy_text" rows="3" placeholder="Ma vision et mes valeurs..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Description Photo
+                                    <div class="label-desc">Texte alternatif pour l'accessibilité</div>
+                                </label>
+                                <input type="text" class="input" id="about_section.image_alt" data-field="about_section.image_alt" placeholder="Portrait d'Amelia Feuss, chef passionnée">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Homepage Sections -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📋 Sections Page d'Accueil <span class="card-badge">9 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre "Derniers Contenus"
+                                        <div class="label-desc">Section des dernières créations</div>
+                                    </label>
+                                    <input type="text" class="input" id="homepage.latest_recipes.title" data-field="homepage.latest_recipes.title" placeholder="Dernières recettes">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre "Contenus Populaires"
+                                        <div class="label-desc">Section des plus appréciés</div>
+                                    </label>
+                                    <input type="text" class="input" id="homepage.popular_recipes.title" data-field="homepage.popular_recipes.title" placeholder="Recettes populaires">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Description "Derniers Contenus"
+                                    <div class="label-desc">Texte explicatif sous le titre</div>
+                                </label>
+                                <textarea class="input textarea" id="homepage.latest_recipes.description" data-field="homepage.latest_recipes.description" rows="2" placeholder="Découvrez mes dernières créations..."></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Message "Pas de Populaires"
+                                        <div class="label-desc">Quand la section populaires est vide</div>
+                                    </label>
+                                    <input type="text" class="input" id="homepage.popular_recipes.empty_message" data-field="homepage.popular_recipes.empty_message" placeholder="Aucun contenu populaire pour le moment">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre "Explorer Catégories"
+                                        <div class="label-desc">Section de navigation par catégories</div>
+                                    </label>
+                                    <input type="text" class="input" id="homepage.categories_section.title" data-field="homepage.categories_section.title" placeholder="Explorer par catégorie">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre Newsletter
+                                        <div class="label-desc">Titre section d'inscription</div>
+                                    </label>
+                                    <input type="text" class="input" id="homepage.newsletter.title" data-field="homepage.newsletter.title" placeholder="Reçois nos contenus les plus aimés ✨">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Placeholder Email
+                                        <div class="label-desc">Texte dans le champ email</div>
+                                    </label>
+                                    <input type="text" class="input" id="homepage.newsletter.email_placeholder" data-field="homepage.newsletter.email_placeholder" placeholder="Ton adresse email">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Texte Bouton Newsletter
+                                        <div class="label-desc">Bouton d'inscription</div>
+                                    </label>
+                                    <input type="text" class="input" id="homepage.newsletter.button_text" data-field="homepage.newsletter.button_text" placeholder="Je m'abonne">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Description Newsletter
+                                        <div class="label-desc">Texte pour encourager l'inscription</div>
+                                    </label>
+                                    <textarea class="input textarea" id="homepage.newsletter.description" data-field="homepage.newsletter.description" rows="2" placeholder="Des idées simples, directement dans ta boîte mail..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== INTERFACE ===== -->
+                <section id="section-interface" class="section">
+                    <!-- Navigation -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🧭 Navigation & Menus <span class="card-badge">10 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <h4 style="margin-bottom: 1rem; color: var(--gray-700);">Textes des Menus</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Menu "Accueil"</label>
+                                    <input type="text" class="input" id="navigation.menu_items.home" data-field="navigation.menu_items.home" placeholder="Accueil">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Menu "Contenus"</label>
+                                    <input type="text" class="input" id="navigation.menu_items.recipes" data-field="navigation.menu_items.recipes" placeholder="Recettes">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Menu "Catégories"</label>
+                                    <input type="text" class="input" id="navigation.menu_items.categories" data-field="navigation.menu_items.categories" placeholder="Catégories">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Menu "À Propos"</label>
+                                    <input type="text" class="input" id="navigation.menu_items.about" data-field="navigation.menu_items.about" placeholder="À propos">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="label">Menu "Contact"</label>
+                                <input type="text" class="input" id="navigation.menu_items.contact" data-field="navigation.menu_items.contact" placeholder="Contact">
+                            </div>
+
+                            <h4 style="margin: 2rem 0 1rem; color: var(--gray-700);">Titres des Pages</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Titre Page "Accueil"</label>
+                                    <input type="text" class="input" id="navigation.page_titles.home" data-field="navigation.page_titles.home" placeholder="Accueil">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Titre Page "Contenus"</label>
+                                    <input type="text" class="input" id="navigation.page_titles.recipes" data-field="navigation.page_titles.recipes" placeholder="Nos Recettes">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Titre Page "Catégories"</label>
+                                    <input type="text" class="input" id="navigation.page_titles.categories" data-field="navigation.page_titles.categories" placeholder="Toutes les Catégories">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Titre Page "À Propos"</label>
+                                    <input type="text" class="input" id="navigation.page_titles.about" data-field="navigation.page_titles.about" placeholder="À Propos de Nous">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="label">Titre Page "Contact"</label>
+                                <input type="text" class="input" id="navigation.page_titles.contact" data-field="navigation.page_titles.contact" placeholder="Nous Contacter">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Header & Recherche -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🔍 En-tête & Recherche <span class="card-badge">4 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Placeholder Recherche (Desktop)
+                                        <div class="label-desc">Texte dans la barre de recherche</div>
+                                    </label>
+                                    <input type="text" class="input" id="header.search_placeholder" data-field="header.search_placeholder" placeholder="Rechercher une recette d'exception...">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Placeholder Recherche (Mobile)
+                                        <div class="label-desc">Version courte pour mobile</div>
+                                    </label>
+                                    <input type="text" class="input" id="header.search_placeholder_mobile" data-field="header.search_placeholder_mobile" placeholder="Rechercher...">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Texte Bouton "Suivre"
+                                        <div class="label-desc">Bouton de suivi</div>
+                                    </label>
+                                    <input type="text" class="input" id="header.follow_button_text" data-field="header.follow_button_text" placeholder="Suivez-moi">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Label Menu (Accessibilité)
+                                        <div class="label-desc">Pour les lecteurs d'écran</div>
+                                    </label>
+                                    <input type="text" class="input" id="header.menu_aria_label" data-field="header.menu_aria_label" placeholder="Ouvrir le menu">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Composants Recherche -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🔍 Messages de Recherche <span class="card-badge">4 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Message "Aucun Résultat"
+                                        <div class="label-desc">Quand la recherche ne trouve rien</div>
+                                    </label>
+                                    <input type="text" class="input" id="components.search.no_results" data-field="components.search.no_results" placeholder="Aucun résultat trouvé">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Message "Chargement"
+                                        <div class="label-desc">Pendant la recherche</div>
+                                    </label>
+                                    <input type="text" class="input" id="components.search.loading" data-field="components.search.loading" placeholder="Recherche en cours...">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Texte "Effacer"
+                                        <div class="label-desc">Bouton pour vider la recherche</div>
+                                    </label>
+                                    <input type="text" class="input" id="components.search.clear_label" data-field="components.search.clear_label" placeholder="Effacer la recherche">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Emoji "Aucun Résultat"
+                                        <div class="label-desc">Icône avec le message</div>
+                                    </label>
+                                    <input type="text" class="input" id="components.search.no_results_emoji" data-field="components.search.no_results_emoji" placeholder="🔍">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🦶 Pied de Page <span class="card-badge">18 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="label">
+                                    Description Site (Footer)
+                                    <div class="label-desc">Texte de présentation en bas de page</div>
+                                </label>
+                                <textarea class="input textarea" id="footer.description" data-field="footer.description" rows="3" placeholder="Découvrez un univers d'exception..."></textarea>
+                            </div>
+    
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Titre "Navigation"</label>
+                                    <input type="text" class="input" id="footer.navigation_title" data-field="footer.navigation_title" placeholder="Navigation">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Titre "Catégories"</label>
+                                    <input type="text" class="input" id="footer.categories_title" data-field="footer.categories_title" placeholder="Catégories">
+                                </div>
+                            </div>
+    
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Titre "Réseaux Sociaux"</label>
+                                    <input type="text" class="input" id="footer.social_title" data-field="footer.social_title" placeholder="Suivez-nous">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Titre "Newsletter"</label>
+                                    <input type="text" class="input" id="footer.newsletter_title" data-field="footer.newsletter_title" placeholder="Newsletter">
+                                </div>
+                            </div>
+    
+                            <div class="form-group">
+                                <label class="label">
+                                    Description Newsletter (Footer)
+                                    <div class="label-desc">Description newsletter dans le footer</div>
+                                </label>
+                                <textarea class="input textarea" id="footer.newsletter_description" data-field="footer.newsletter_description" rows="2" placeholder="Recevez nos dernières créations..."></textarea>
+                            </div>
+    
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Bouton Newsletter</label>
+                                    <input type="text" class="input" id="footer.newsletter_button" data-field="footer.newsletter_button" placeholder="S'abonner">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Signature Copyright</label>
+                                    <input type="text" class="input" id="footer.copyright_tagline" data-field="footer.copyright_tagline" placeholder="Créé avec ❤️ pour les passionnés">
+                                </div>
+                            </div>
+    
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Préfixe Copyright</label>
+                                    <input type="text" class="input" id="footer.copyright_prefix" data-field="footer.copyright_prefix" placeholder="©">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Suffixe Copyright</label>
+                                    <input type="text" class="input" id="footer.copyright_suffix" data-field="footer.copyright_suffix" placeholder=". Tous droits réservés.">
+                                </div>
+                            </div>
+    
+                            <h4 style="margin: 2rem 0 1rem; color: var(--gray-700);">Liens Légaux (URLs)</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Lien Confidentialité</label>
+                                    <input type="text" class="input" id="footer.legal_links.privacy" data-field="footer.legal_links.privacy" placeholder="/politique-confidentialite/">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Lien Conditions</label>
+                                    <input type="text" class="input" id="footer.legal_links.terms" data-field="footer.legal_links.terms" placeholder="/conditions-utilisation/">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Lien Mentions Légales</label>
+                                    <input type="text" class="input" id="footer.legal_links.legal" data-field="footer.legal_links.legal" placeholder="/mentions-legales/">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Lien Contact</label>
+                                    <input type="text" class="input" id="footer.legal_links.contact" data-field="footer.legal_links.contact" placeholder="/contact/">
+                                </div>
+                            </div>
+    
+                            <h4 style="margin: 2rem 0 1rem; color: var(--gray-700);">Textes des Liens Légaux</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Texte "Confidentialité"
+                                        <div class="label-desc">Texte affiché pour le lien</div>
+                                    </label>
+                                    <input type="text" class="input" id="footer.legal_links_text.privacy" data-field="footer.legal_links_text.privacy" placeholder="Politique de confidentialité">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Texte "Conditions"
+                                        <div class="label-desc">Texte affiché pour le lien</div>
+                                    </label>
+                                    <input type="text" class="input" id="footer.legal_links_text.terms" data-field="footer.legal_links_text.terms" placeholder="Conditions d'utilisation">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Texte "Mentions Légales"
+                                        <div class="label-desc">Texte affiché pour le lien</div>
+                                    </label>
+                                    <input type="text" class="input" id="footer.legal_links_text.legal" data-field="footer.legal_links_text.legal" placeholder="Mentions légales">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Texte "Contact"
+                                        <div class="label-desc">Texte affiché pour le lien</div>
+                                    </label>
+                                    <input type="text" class="input" id="footer.legal_links_text.contact" data-field="footer.legal_links_text.contact" placeholder="Contact">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pages Système -->
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📄 Pages & Listes <span class="card-badge">13 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Titre Page "Contenus"
+                                        <div class="label-desc">Titre principal de la page listant vos contenus</div>
+                                    </label>
+                                    <input type="text" class="input" id="list_pages.recipes_title" data-field="list_pages.recipes_title" placeholder="Nos meilleures recettes">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Préfixe Titre Catégorie
+                                        <div class="label-desc">Texte avant le nom de catégorie</div>
+                                    </label>
+                                    <input type="text" class="input" id="list_pages.categories_title_prefix" data-field="list_pages.categories_title_prefix" placeholder="Recettes :">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    Description Page "Contenus"
+                                    <div class="label-desc">Texte de présentation de vos contenus</div>
+                                </label>
+                                <textarea class="input textarea" id="list_pages.recipes_description" data-field="list_pages.recipes_description" rows="2" placeholder="Testées, retravaillées et choisies avec soin..."></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">
+                                        Message "Aucun Contenu"
+                                        <div class="label-desc">Quand une catégorie est vide</div>
+                                    </label>
+                                    <input type="text" class="input" id="list_pages.no_recipes" data-field="list_pages.no_recipes" placeholder="Aucune recette trouvée">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Titre "Toutes Catégories"</label>
+                                    <input type="text" class="input" id="categories_page.title" data-field="categories_page.title" placeholder="Toutes les catégories">
+                                </div>
+                            </div>
+
+                            <h4 style="margin: 2rem 0 1rem; color: var(--gray-700);">Breadcrumb (Fil d'Ariane)</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Breadcrumb "Accueil"</label>
+                                    <input type="text" class="input" id="list_pages.breadcrumb.home" data-field="list_pages.breadcrumb.home" placeholder="Accueil">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Breadcrumb "Catégories"</label>
+                                    <input type="text" class="input" id="list_pages.breadcrumb.categories" data-field="list_pages.breadcrumb.categories" placeholder="Catégories">
+                                </div>
+                            </div>
+
+                            <h4 style="margin: 2rem 0 1rem; color: var(--gray-700);">Pages Tags</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Titre "Tous Tags"</label>
+                                    <input type="text" class="input" id="tags_page.all_tags_title" data-field="tags_page.all_tags_title" placeholder="Tous les tags">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">
+                                        Préfixe Titre Tag
+                                        <div class="label-desc">Texte avant le nom du tag</div>
+                                    </label>
+                                    <input type="text" class="input" id="tags_page.title_prefix" data-field="tags_page.title_prefix" placeholder="Recettes taguées">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="label">
+                                    Message "Aucun Contenu Tag"
+                                    <div class="label-desc">Quand un tag n'a pas de contenu</div>
+                                </label>
+                                <input type="text" class="input" id="tags_page.no_recipes" data-field="tags_page.no_recipes" placeholder="Aucune recette pour ce tag">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📞 Formulaire de Contact <span class="card-badge">6 champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Titre Page Contact</label>
+                                    <input type="text" class="input" id="contact_page.title" data-field="contact_page.title" placeholder="Nous Contacter">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Sous-titre Page Contact</label>
+                                    <input type="text" class="input" id="contact_page.subtitle" data-field="contact_page.subtitle" placeholder="N'hésitez pas à nous écrire">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Label "Nom"</label>
+                                    <input type="text" class="input" id="contact_page.form.name_label" data-field="contact_page.form.name_label" placeholder="Nom">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Label "Email"</label>
+                                    <input type="text" class="input" id="contact_page.form.email_label" data-field="contact_page.form.email_label" placeholder="Email">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="label">Label "Message"</label>
+                                    <input type="text" class="input" id="contact_page.form.message_label" data-field="contact_page.form.message_label" placeholder="Message">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Texte Bouton "Envoyer"</label>
+                                    <input type="text" class="input" id="contact_page.form.submit_button" data-field="contact_page.form.submit_button" placeholder="Envoyer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== GESTION SITES (MODE MASTER) ===== -->
+                <section id="section-sites" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🌐 Gestion Multi-Sites <span class="card-badge" id="sites-badge">Mode Master</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <button class="btn btn-primary" onclick="openNewSiteModal()">➕ Créer un Nouveau Site</button>
+                                <button class="btn btn-secondary" onclick="refreshSites()">🔄 Actualiser la Liste</button>
+                            </div>
+                            
+                            <div class="sites-grid" id="sites-grid">
+                                <!-- Sites seront chargés dynamiquement -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== MONITORING (MODE MASTER) ===== -->
+                <section id="section-monitoring" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📈 Monitoring Global <span class="card-badge">Temps Réel</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="dashboard-grid">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="monitor-sites">0</div>
+                                    <div class="stat-label">Sites Actifs</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" id="monitor-deploys">0</div>
+                                    <div class="stat-label">Déploiements Today</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" id="monitor-uptime">100%</div>
+                                    <div class="stat-label">Disponibilité</div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-2">
+                                <p style="color: var(--gray-500);">🚧 Fonctionnalité en développement - Bientôt disponible</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== MODE YAML EXPERT ===== -->
+                <section id="section-yaml" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">⚡ Mode Expert YAML <span class="card-badge">88 Champs</span></h2>
+                        </div>
+                        <div class="card-body">
+                            <div style="background: var(--gray-50); padding: 1.5rem; border-radius: var(--radius); margin-bottom: 1.5rem; border-left: 4px solid var(--primary);">
+                                <h4 style="color: var(--primary); margin-bottom: 0.5rem;">💡 Mode Expert</h4>
+                                <p style="margin-bottom: 0.5rem;">Modifiez directement la configuration YAML avec les <strong>88 champs sécurisés</strong>.</p>
+                                <p style="color: var(--gray-600); font-size: 0.875rem;">⚠️ Seuls les champs autorisés sont affichés. Les sections techniques restent protégées.</p>
+                            </div>
+
+                            <div style="background: var(--gray-900); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem;">
+                                <textarea 
+                                    id="yaml-content" 
+                                    style="width: 100%; height: 400px; background: transparent; border: none; color: #f9fafb; font-family: 'Monaco', 'Consolas', monospace; font-size: 0.875rem; resize: vertical; line-height: 1.6;"
+                                    placeholder="# Configuration YAML sera chargée automatiquement...&#10;# Modifiez les valeurs et sauvegardez"></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <button class="btn btn-primary" onclick="loadYamlConfig()">📥 Charger Config Actuelle</button>
+                                <button class="btn btn-success" onclick="saveYamlConfig()">💾 Appliquer Modifications</button>
+                                <button class="btn btn-secondary" onclick="copyYamlConfig()">📋 Copier</button>
+                                <button class="btn btn-secondary" onclick="downloadYamlConfig()">💾 Télécharger</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bouton Sauvegarde Flottant -->
+    <button class="save-fab" id="save-fab" onclick="saveAllChanges()" title="Sauvegarder toutes les modifications">💾</button>
+
+    <!-- ===== MODAL NOUVEAU SITE ===== -->
+    <div class="modal" id="new-site-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🚀 Créer un Nouveau Site</h2>
+                <button class="modal-close" onclick="closeNewSiteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="new-site-form">
+                    <div class="form-group">
+                        <label class="label">
+                            Nom du Site
+                            <div class="label-desc">Le nom qui apparaîtra sur votre site</div>
+                        </label>
+                        <input type="text" class="input" id="new-site-name" required placeholder="Mon Restaurant">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">
+                            Nom Technique (URL)
+                            <div class="label-desc">Lettres minuscules, chiffres et tirets uniquement</div>
+                        </label>
+                        <input type="text" class="input" id="new-repo-name" required placeholder="mon-restaurant" pattern="[a-z0-9-_]+">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">
+                            Description du Site
+                            <div class="label-desc">Courte description de votre activité</div>
+                        </label>
+                        <textarea class="input textarea" id="new-site-description" rows="3" placeholder="Cuisine française authentique dans une ambiance chaleureuse..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="label">
+                                Titre Ligne 1
+                                <div class="label-desc">Première ligne du titre principal</div>
+                            </label>
+                            <input type="text" class="input" id="new-hero-line1" placeholder="Bienvenue chez">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="label">
+                                Titre Ligne 2
+                                <div class="label-desc">Deuxième ligne du titre principal</div>
+                            </label>
+                            <input type="text" class="input" id="new-hero-line2" placeholder="Mon Restaurant">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">
+                            Couleur Principale
+                            <div class="label-desc">Couleur de base de votre site</div>
+                        </label>
+                        <input type="color" class="input" id="new-primary-color" value="#6366f1" style="height: 60px;">
+                    </div>
+                    
+                    <div class="form-row mt-2">
+                        <button type="button" class="btn btn-primary" onclick="createNewSite()">🚀 Créer le Site</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeNewSiteModal()">❌ Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <style>
+    /* ===== SMART ADMIN - CSS COMPLET ===== */
+    
+/* =========================================
+   SMART ADMIN - CSS MOBILE-FIRST OPTIMISÉ
+   Conçu pour une expérience parfaite 📱💻
+   ========================================= */
+
+/* ===== 1. VARIABLES CSS DYNAMIQUES ===== */
+    :root {
+        /* Couleurs principales */
+        --primary: #6366f1;
+        --primary-light: #818cf8;
+        --primary-dark: #4f46e5;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        
+        /* Échelle de gris */
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+        --white: #ffffff;
+        
+        /* Espacements responsifs */
+        --space-xs: 0.25rem;    /* 4px */
+        --space-sm: 0.5rem;     /* 8px */
+        --space-md: 1rem;       /* 16px */
+        --space-lg: 1.5rem;     /* 24px */
+        --space-xl: 2rem;       /* 32px */
+        --space-2xl: 3rem;      /* 48px */
+        
+        /* Rayons de bordure adaptatifs */
+        --radius-sm: 6px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
+        --radius-full: 9999px;
+        
+        /* Ombres optimisées */
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+        
+        /* Transitions fluides */
+        --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+        
+        /* Tailles minimum touch-friendly */
+        --touch-target: 44px;
+        --touch-target-sm: 36px;
+        
+        /* Layout variables */
+        --sidebar-width: 280px;
+        --sidebar-width-collapsed: 80px;
+        --header-height: 80px;
+        
+        /* Z-index scale */
+        --z-dropdown: 1000;
+        --z-sticky: 1010;
+        --z-fixed: 1020;
+        --z-modal-backdrop: 1030;
+        --z-modal: 1040;
+        --z-popover: 1050;
+        --z-tooltip: 1060;
+        --z-toast: 1070;
+    }
+    
+    /* Variables responsives pour tablette */
+    @media (min-width: 768px) {
+        :root {
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1.25rem;
+            --space-lg: 2rem;
+            --space-xl: 2.5rem;
+            --space-2xl: 4rem;
+            --radius-sm: 8px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 18px;
+        }
+    }
+    
+    /* Variables responsives pour desktop */
+    @media (min-width: 1024px) {
+        :root {
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 3rem;
+            --space-2xl: 5rem;
+            --radius-sm: 10px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+    }
+    
+    /* ===== 2. RESET MODERNE & BASE ===== */
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    html {
+        font-size: 16px;
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: var(--gray-800);
+        background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+        overflow-x: hidden;
+        min-height: 100vh;
+        min-height: 100dvh; /* Nouvelle unité viewport dynamique */
+    }
+    
+    /* Amélioration des performances de rendu */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+    
+    /* ===== 3. LAYOUT CONTAINER PRINCIPAL ===== */
+    .admin-container {
+        display: flex;
+        min-height: 100vh;
+        min-height: 100dvh;
+        position: relative;
+        width: 100%;
+        background: inherit;
+    }
+    
+    /* ===== 4. SIDEBAR RÉVOLUTIONNAIRE ===== */
+    .sidebar {
+        /* Mobile: sidebar en overlay */
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: var(--sidebar-width);
+        max-width: 85vw; /* Limite sur très petits écrans */
+        background: linear-gradient(180deg, var(--gray-900) 0%, var(--gray-800) 100%);
+        z-index: var(--z-fixed);
+        
+        /* Animation de transition */
+        transform: translateX(-100%);
+        transition: transform var(--transition-normal);
+        
+        /* Scroll optimisé */
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        
+        /* Amélioration performance */
+        will-change: transform;
+        backface-visibility: hidden;
+    }
+    
+    /* Sidebar ouverte sur mobile */
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    
+    /* Sidebar collapsed (petite largeur) */
+    .sidebar.collapsed {
+        width: var(--sidebar-width-collapsed);
+    }
+    
+    /* Desktop: sidebar normale */
+    @media (min-width: 1024px) {
+        .sidebar {
+            position: sticky;
+            top: 0;
+            transform: translateX(0);
+            height: 100vh;
+            height: 100dvh;
+            flex-shrink: 0;
+            max-width: none;
+        }
+    }
+    
+    /* Scrollbar styling pour sidebar */
+    .sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .sidebar::-webkit-scrollbar-track {
+        background: var(--gray-800);
+    }
+    
+    .sidebar::-webkit-scrollbar-thumb {
+        background: var(--gray-600);
+        border-radius: var(--radius-sm);
+    }
+    
+    .sidebar::-webkit-scrollbar-thumb:hover {
+        background: var(--gray-500);
+    }
+    
+    /* ===== 5. OVERLAY MOBILE ===== */
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: calc(var(--z-fixed) - 1);
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-normal);
+    }
+    
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Masquer overlay sur desktop */
+    @media (min-width: 1024px) {
+        .sidebar-overlay {
+            display: none;
+        }
+    }
+    
+    /* ===== 6. BOUTON TOGGLE SIDEBAR ===== */
+    .sidebar-toggle {
+        position: fixed;
+        top: var(--space-md);
+        left: var(--space-md);
+        width: var(--touch-target);
+        height: var(--touch-target);
+        background: var(--primary);
+        border: none;
+        border-radius: var(--radius-full);
+        color: var(--white);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        z-index: var(--z-modal);
+        box-shadow: var(--shadow-lg);
+        transition: all var(--transition-fast);
+        
+        /* Amélioration touch */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .sidebar-toggle:hover {
+        background: var(--primary-dark);
+        transform: scale(1.05);
+    }
+    
+    .sidebar-toggle:active {
+        transform: scale(0.95);
+    }
+    
+    /* Masquer toggle sur desktop */
+    @media (min-width: 1024px) {
+        .sidebar-toggle {
+            display: none;
+        }
+    }
+    
+    /* ===== 7. CONTENU SIDEBAR ===== */
+    .sidebar-content {
+        padding: var(--space-xl) 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Logo section */
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        padding: 0 var(--space-xl) var(--space-xl);
+        border-bottom: 1px solid var(--gray-700);
+        margin-bottom: var(--space-xl);
+        flex-shrink: 0;
+    }
+    
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--white);
+        flex-shrink: 0;
+    }
+    
+    .logo-text {
+        color: #ffffff !important;
+        font-size: 1.25rem;
+        font-weight: 700;
+        transition: var(--transition-normal);
+        white-space: nowrap;
+    }
+    
+    .sidebar.collapsed .logo-text {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    
+    /* ===== 8. NAVIGATION ===== */
+    .nav {
+        flex: 1;
+        padding: 0 var(--space-md);
+        overflow-y: auto;
+    }
+    
+    .nav-section {
+        margin-bottom: var(--space-xl);
+    }
+    
+    .nav-title {
+        color: var(--gray-400);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        padding: 0 var(--space-md) var(--space-sm);
+        transition: var(--transition-normal);
+    }
+    
+    .sidebar.collapsed .nav-title {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    .nav-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        padding: var(--space-md);
+        margin: var(--space-xs) 0;
+        border-radius: var(--radius-lg);
+        color: var(--gray-300);
+        text-decoration: none;
+        transition: all var(--transition-fast);
+        cursor: pointer;
+        position: relative;
+        min-height: var(--touch-target);
+        
+        /* Amélioration touch */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .nav-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+        transform: translateX(4px);
+    }
+    
+    .nav-item:active {
+        transform: translateX(2px) scale(0.98);
+    }
+    
+    .nav-item.active {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: var(--white);
+        box-shadow: var(--shadow-lg);
+        transform: translateX(4px);
+    }
+    
+    .nav-item.active::before {
+        content: '';
+        position: absolute;
+        left: calc(-1 * var(--space-md));
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 60%;
+        background: var(--white);
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    
+    .nav-icon {
+        font-size: 1.25rem;
+        width: 24px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    
+    .nav-text {
+        font-weight: 500;
+        transition: var(--transition-normal);
+        white-space: nowrap;
+    }
+    
+    .sidebar.collapsed .nav-text {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    
+    .nav-badge {
+        background: var(--success);
+        color: var(--white);
+        font-size: 0.6rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        margin-left: auto;
+        min-width: 20px;
+        text-align: center;
+        transition: var(--transition-normal);
+    }
+    
+    .sidebar.collapsed .nav-badge {
+        opacity: 0;
+    }
+    
+    /* ===== 9. CONTENU PRINCIPAL ===== */
+    .main-content {
+        flex: 1;
+        min-width: 0; /* Permet la compression */
+        display: flex;
+        flex-direction: column;
+        background: transparent;
+        
+        /* Mobile: pleine largeur */
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+    
+    /* Desktop: ajustement avec sidebar */
+    @media (min-width: 1024px) {
+        .main-content {
+            width: calc(100% - var(--sidebar-width));
+        }
+        
+        .sidebar.collapsed + .main-content {
+            width: calc(100% - var(--sidebar-width-collapsed));
+        }
+    }
+    
+    /* ===== 10. HEADER INTELLIGENT ===== */
+    .header {
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-200);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: var(--z-sticky);
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        
+        /* Mobile padding with space for toggle button */
+        padding: var(--space-md);
+        padding-left: calc(var(--touch-target) + var(--space-xl));
+        min-height: var(--header-height);
+    }
+    
+    /* Desktop: padding normal */
+    @media (min-width: 1024px) {
+        .header {
+            padding: var(--space-lg) var(--space-xl);
+            padding-left: var(--space-xl);
+        }
+    }
+    
+    .header-left h1 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--gray-900);
+        margin-bottom: var(--space-xs);
+        line-height: 1.2;
+    }
+    
+    .header-subtitle {
+        color: var(--gray-500);
+        font-size: 0.8rem;
+        line-height: 1.3;
+    }
+    
+    /* Responsive typography */
+    @media (min-width: 768px) {
+        .header-left h1 {
+            font-size: 1.875rem;
+        }
+        
+        .header-subtitle {
+            font-size: 0.875rem;
+        }
+    }
+    
+    /* ===== 11. STATUS BAR ===== */
+    .status-bar {
+        display: flex;
+        gap: var(--space-sm);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .status-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        padding: var(--space-sm) var(--space-md);
+        background: var(--gray-50);
+        border-radius: var(--radius-lg);
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    
+    @media (min-width: 768px) {
+        .status-item {
+            font-size: 0.875rem;
+        }
+    }
+    
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+        flex-shrink: 0;
+    }
+    
+    .status-dot.success { 
+        background: var(--success); 
+    }
+    
+    .status-dot.warning { 
+        background: var(--warning); 
+    }
+    
+    .status-dot.danger { 
+        background: var(--danger); 
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    /* ===== 12. CONTENU SECTIONS ===== */
+    .content {
+        flex: 1;
+        padding: var(--space-md);
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    @media (min-width: 768px) {
+        .content {
+            padding: var(--space-lg);
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .content {
+            padding: var(--space-xl);
+        }
+    }
+    
+    .section {
+        display: none;
+        animation: fadeIn 0.5s ease-out;
+    }
+    
+    .section.active {
+        display: block;
+    }
+    
+    @keyframes fadeIn {
+        from { 
+            opacity: 0; 
+            transform: translateY(20px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+    
+    /* ===== 13. CARDS RÉVOLUTIONNAIRES ===== */
+    .card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        margin-bottom: var(--space-lg);
+        transition: all var(--transition-normal);
+        width: 100%;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .card-header {
+        padding: var(--space-md);
+        border-bottom: 1px solid var(--gray-100);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: var(--space-md);
+        flex-wrap: wrap;
+    }
+    
+    @media (min-width: 768px) {
+        .card-header {
+            padding: var(--space-lg);
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+    }
+    
+    .card-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        line-height: 1.3;
+        min-width: 0;
+    }
+    
+    @media (min-width: 768px) {
+        .card-title {
+            font-size: 1.25rem;
+            gap: var(--space-md);
+        }
+    }
+    
+    .card-badge {
+        background: var(--primary);
+        color: var(--white);
+        font-size: 0.75rem;
+        padding: var(--space-xs) var(--space-sm);
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    .card-body {
+        padding: var(--space-md);
+    }
+    
+    @media (min-width: 768px) {
+        .card-body {
+            padding: var(--space-lg);
+        }
+    }
+    
+    /* ===== 14. FORMULAIRES TOUCH-FRIENDLY ===== */
+    .form-group {
+        margin-bottom: var(--space-lg);
+        width: 100%;
+    }
+    
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        margin-bottom: var(--space-lg);
+        width: 100%;
+    }
+    
+    /* Tablette: 2 colonnes */
+    @media (min-width: 768px) {
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+        }
+    }
+    
+    .form-row-3 {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        margin-bottom: var(--space-lg);
+        width: 100%;
+    }
+    
+    /* Tablette: 2 colonnes, Desktop: 3 colonnes */
+    @media (min-width: 768px) {
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .form-row-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    .label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: var(--space-sm);
+        color: var(--gray-700);
+        font-size: 0.875rem;
+        line-height: 1.4;
+    }
+    
+    .label-desc {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        font-weight: 400;
+        margin-top: var(--space-xs);
+        line-height: 1.4;
+    }
+    
+    .input {
+        width: 100%;
+        padding: var(--space-md);
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        font-size: 1rem; /* Évite le zoom iOS */
+        font-family: inherit;
+        line-height: 1.5;
+        transition: all var(--transition-fast);
+        background: var(--white);
+        
+        /* Touch optimization */
+        min-height: var(--touch-target);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    .input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        transform: translateY(-1px);
+    }
+    
+    .input.modified {
+        border-color: var(--warning);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+    
+    .input.error {
+        border-color: var(--danger);
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+    
+    .input.success {
+        border-color: var(--success);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+    
+    .textarea {
+        resize: vertical;
+        min-height: 100px;
+        line-height: 1.6;
+    }
+    
+    /* Amélioration inputs color */
+    input[type="color"] {
+        cursor: pointer;
+        border: 3px solid var(--gray-200);
+        padding: 4px;
+        min-height: 60px;
+    }
+    
+    input[type="color"]:hover {
+        border-color: var(--primary);
+    }
+    
+    /* ===== 15. BOUTONS MODERNES ===== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-sm);
+        padding: var(--space-md) var(--space-lg);
+        border: none;
+        border-radius: var(--radius-lg);
+        font-size: 0.875rem;
+        font-weight: 600;
+        font-family: inherit;
+        line-height: 1;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        text-decoration: none;
+        white-space: nowrap;
+        
+        /* Touch optimization */
+        min-height: var(--touch-target);
+        min-width: var(--touch-target);
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+    
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+    
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: var(--white);
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        color: var(--white);
+    }
+    
+    .btn-success:hover:not(:disabled) {
+        background: linear-gradient(135deg, #059669 0%, var(--success) 100%);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+        color: var(--white);
+    }
+    
+    .btn-danger:hover:not(:disabled) {
+        background: linear-gradient(135deg, #dc2626 0%, var(--danger) 100%);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .btn-secondary {
+        background: var(--gray-100);
+        color: var(--gray-700);
+    }
+    
+    .btn-secondary:hover:not(:disabled) {
+        background: var(--gray-200);
+        transform: translateY(-1px);
+    }
+    
+    .btn-sm {
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.75rem;
+        min-height: var(--touch-target-sm);
+    }
+    
+    /* ===== 16. DASHBOARD GRID ===== */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+        margin-bottom: var(--space-xl);
+        width: 100%;
+    }
+    
+    @media (min-width: 640px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    .stat-card {
+        background: linear-gradient(135deg, var(--white) 0%, var(--gray-50) 100%);
+        padding: var(--space-lg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        text-align: center;
+        transition: all var(--transition-normal);
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: var(--space-sm);
+        line-height: 1;
+    }
+    
+    @media (min-width: 768px) {
+        .stat-number {
+            font-size: 2.5rem;
+        }
+    }
+    
+    .stat-label {
+        color: var(--gray-600);
+        font-weight: 500;
+        font-size: 0.875rem;
+        line-height: 1.3;
+    }
+    
+    /* ===== 17. SITES GRID ===== */
+    .sites-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+        width: 100%;
+    }
+    
+    @media (min-width: 640px) {
+        .sites-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .sites-grid {
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+    }
+    
+    .site-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        transition: all var(--transition-normal);
+        position: relative;
+    }
+    
+    .site-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .site-card-header {
+        padding: var(--space-lg);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: var(--white);
+    }
+    
+    .site-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: var(--space-sm);
+        line-height: 1.3;
+    }
+    
+    .site-url {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
+        line-height: 1.4;
+    }
+    
+    .site-card-body {
+        padding: var(--space-lg);
+    }
+    
+    .site-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+    }
+    
+    /* ===== 18. MODAL MODERNE ===== */
+    .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: var(--z-modal);
+        padding: var(--space-md);
+        overflow-y: auto;
+    }
+    
+    .modal.show {
+        display: flex;
+    }
+    
+    .modal-content {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        width: 100%;
+        max-width: 600px;
+        max-height: 90vh;
+        max-height: 90dvh;
+        overflow-y: auto;
+        animation: modalSlideIn 0.3s ease-out;
+        margin: auto;
+    }
+    
+    /* Gestion clavier virtuel mobile */
+    @media (max-height: 600px) {
+        .modal-content {
+            max-height: 95vh;
+            max-height: 95dvh;
+        }
+    }
+    
+    @keyframes modalSlideIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+    
+    .modal-header {
+        padding: var(--space-lg);
+        border-bottom: 1px solid var(--gray-200);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-md);
+        position: sticky;
+        top: 0;
+        background: var(--white);
+        z-index: 1;
+    }
+    
+    .modal-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        line-height: 1.3;
+        min-width: 0;
+    }
+    
+    @media (min-width: 768px) {
+        .modal-title {
+            font-size: 1.5rem;
+        }
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--gray-500);
+        padding: var(--space-sm);
+        border-radius: var(--radius-lg);
+        transition: all var(--transition-fast);
+        width: var(--touch-target);
+        height: var(--touch-target);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        touch-action: manipulation;
+    }
+    
+    .modal-close:hover {
+        background: var(--gray-100);
+        color: var(--gray-900);
+    }
+    
+    .modal-body {
+        padding: var(--space-lg);
+    }
+    
+    /* ===== 19. BOUTON SAUVEGARDE FLOTTANT ===== */
+    .save-fab {
+        position: fixed;
+        bottom: var(--space-lg);
+        right: var(--space-lg);
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        border: none;
+        border-radius: 50%;
+        color: var(--white);
+        font-size: 1.5rem;
+        cursor: pointer;
+        box-shadow: var(--shadow-xl);
+        transition: all var(--transition-normal);
+        z-index: var(--z-fixed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        /* Touch optimization */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+    
+    /* Ajustement mobile pour éviter les interfaces système */
+    @media (max-width: 767px) {
+        .save-fab {
+            bottom: calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
+            right: var(--space-md);
+            width: 56px;
+            height: 56px;
+            font-size: 1.25rem;
+        }
+    }
+    
+    .save-fab:hover {
+        transform: scale(1.1);
+        box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+    }
+    
+    .save-fab:active {
+        transform: scale(1.05);
+    }
+    
+    .save-fab.modified {
+        background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+        animation: fabBounce 2s infinite;
+    }
+    
+    @keyframes fabBounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    
+    /* ===== 20. NOTIFICATIONS TOAST ===== */
+    .toast-container {
+        position: fixed;
+        top: var(--space-lg);
+        right: var(--space-lg);
+        z-index: var(--z-toast);
+        max-width: 400px;
+        width: calc(100vw - var(--space-xl));
+    }
+    
+    @media (max-width: 767px) {
+        .toast-container {
+            top: calc(var(--space-lg) + env(safe-area-inset-top, 0px));
+            right: var(--space-md);
+            left: var(--space-md);
+            max-width: none;
+            width: auto;
+        }
+    }
+    
+    .toast {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-xl);
+        padding: var(--space-md) var(--space-lg);
+        margin-bottom: var(--space-md);
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        transform: translateX(calc(100% + var(--space-lg)));
+        transition: all var(--transition-normal);
+        border-left: 4px solid var(--gray-300);
+    }
+    
+    .toast.show {
+        transform: translateX(0);
+    }
+    
+    .toast.success {
+        border-left-color: var(--success);
+    }
+    
+    .toast.error {
+        border-left-color: var(--danger);
+    }
+    
+    .toast.warning {
+        border-left-color: var(--warning);
+    }
+    
+    .toast-content {
+        flex: 1;
+        font-weight: 600;
+        font-size: 0.875rem;
+        line-height: 1.4;
+        color: var(--gray-800);
+    }
+    
+    /* ===== 21. LOADING OVERLAY ===== */
+    .loading-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: var(--z-modal);
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
+    
+    .loading-overlay.show {
+        display: flex;
+    }
+    
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid var(--gray-200);
+        border-top: 4px solid var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+        margin-top: var(--space-md);
+        font-weight: 600;
+        color: var(--gray-700);
+        font-size: 0.875rem;
+        text-align: center;
+    }
+    
+    /* ===== 22. MODE BADGE ===== */
+    .mode-badge {
+        position: fixed;
+        top: var(--space-md);
+        right: var(--space-md);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        color: var(--white);
+        padding: var(--space-xs) var(--space-sm);
+        border-radius: var(--radius-full);
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        z-index: var(--z-toast);
+        box-shadow: var(--shadow-md);
+        
+        /* Ajustement mobile */
+        top: calc(var(--space-md) + env(safe-area-inset-top, 0px));
+    }
+    
+    .mode-badge.master {
+        background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+    }
+    
+    .mode-badge.clone {
+        background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+    }
+    
+    /* ===== 23. YAML EDITOR ===== */
+    #yaml-content {
+        width: 100%;
+        min-height: 400px;
+        max-height: 600px;
+        background: #1a1a1a !important;
+        border: 2px solid var(--gray-700);
+        border-radius: var(--radius-lg);
+        ccolor: #ffffff !important;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        padding: var(--space-lg);
+        resize: vertical;
+        outline: none;
+        transition: all var(--transition-fast);
+        
+        /* Amélioration mobile */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    #yaml-content:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+    
+    #yaml-content::placeholder {
+        color: #999999 !important;
+        opacity: 0.8;
+    }
+    
+    /* ===== 24. AMÉLIORATIONS RESPONSIVE ===== */
+    
+    /* Très petits écrans (320px - 480px) */
+    @media (max-width: 480px) {
+        :root {
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 0.75rem;
+            --space-lg: 1rem;
+            --space-xl: 1.5rem;
+            --space-2xl: 2rem;
+            --sidebar-width: 260px;
+        }
+        
+        .header {
+            padding: var(--space-sm);
+            padding-left: calc(var(--touch-target) + var(--space-md));
+            min-height: 70px;
+        }
+        
+        .header-left h1 {
+            font-size: 1.25rem;
+        }
+        
+        .header-subtitle {
+            font-size: 0.75rem;
+        }
+        
+        .content {
+            padding: var(--space-sm);
+        }
+        
+        .card-header,
+        .card-body {
+            padding: var(--space-md);
+        }
+        
+        .modal-content {
+            margin: var(--space-sm);
+            width: calc(100% - var(--space-md));
+        }
+        
+        .toast-container {
+            top: calc(var(--space-sm) + env(safe-area-inset-top, 0px));
+            right: var(--space-sm);
+            left: var(--space-sm);
+        }
+        
+        .save-fab {
+            bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+            right: var(--space-sm);
+            width: 52px;
+            height: 52px;
+            font-size: 1.125rem;
+        }
+        
+        .btn {
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.8rem;
+        }
+        
+        .btn-sm {
+            padding: 6px var(--space-sm);
+            font-size: 0.7rem;
+            min-height: 32px;
+        }
+        
+        .input {
+            padding: var(--space-sm) var(--space-md);
+            font-size: 1rem; /* Garde 1rem pour éviter zoom iOS */
+        }
+        
+        .form-row,
+        .form-row-3 {
+            gap: var(--space-md);
+        }
+        
+        .dashboard-grid,
+        .sites-grid {
+            gap: var(--space-md);
+        }
+        
+        .stat-number {
+            font-size: 1.75rem;
+        }
+        
+        .nav-item {
+            padding: var(--space-sm) var(--space-md);
+            min-height: 40px;
+        }
+        
+        .status-bar {
+            gap: var(--space-xs);
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .status-item {
+            font-size: 0.7rem;
+            padding: var(--space-xs) var(--space-sm);
+        }
+    }
+    
+    /* Tablettes portrait (768px - 1024px) */
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .sidebar {
+            width: 260px;
+        }
+        
+        .header {
+            padding-left: calc(var(--touch-target) + var(--space-lg));
+        }
+        
+        .form-row-3 {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .dashboard-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .sites-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    /* Desktop large (1440px+) */
+    @media (min-width: 1440px) {
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .sites-grid {
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        }
+    }
+    
+    /* ===== 25. ORIENTATION LANDSCAPE MOBILE ===== */
+    @media (max-height: 500px) and (orientation: landscape) {
+        .sidebar {
+            width: 260px;
+        }
+        
+        .header {
+            min-height: 60px;
+            padding: var(--space-sm) var(--space-md);
+        }
+        
+        .header-left h1 {
+            font-size: 1.125rem;
+        }
+        
+        .content {
+            padding: var(--space-sm) var(--space-md);
+        }
+        
+        .modal-content {
+            max-height: 95vh;
+            max-height: 95dvh;
+        }
+        
+        .card-header,
+        .card-body {
+            padding: var(--space-sm) var(--space-md);
+        }
+        
+        .save-fab {
+            width: 48px;
+            height: 48px;
+            font-size: 1rem;
+            bottom: var(--space-sm);
+        }
+    }
+    
+    /* ===== 26. DARK MODE PREPARATION ===== */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --gray-50: #18181b;
+            --gray-100: #27272a;
+            --gray-200: #3f3f46;
+            --gray-300: #52525b;
+            --gray-400: #71717a;
+            --gray-500: #a1a1aa;
+            --gray-600: #d4d4d8;
+            --gray-700: #e4e4e7;
+            --gray-800: #f4f4f5;
+            --gray-900: #fafafa;
+            --white: #09090b;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #000000 0%, var(--gray-50) 100%);
+        }
+        
+        .header {
+            background: rgba(24, 24, 27, 0.95);
+            border-bottom-color: var(--gray-200);
+        }
+        
+        .card {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .input {
+            background: var(--gray-100);
+            border-color: var(--gray-300);
+            color: var(--gray-800);
+        }
+        
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+        
+        .toast {
+            background: var(--gray-100);
+            border-color: var(--gray-300);
+        }
+        
+        .modal-content {
+            background: var(--gray-100);
+        }
+    }
+    
+    /* ===== 27. PRÉFÉRENCES UTILISATEUR ===== */
+    
+    /* Réduction de mouvement */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+        
+        .save-fab.modified {
+            animation: none;
+        }
+        
+        .status-dot {
+            animation: none;
+        }
+        
+        .spinner {
+            animation: none;
+            border-top-color: var(--primary);
+        }
+    }
+    
+    /* Contraste élevé */
+    @media (prefers-contrast: high) {
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #004499;
+            --success: #008844;
+            --warning: #cc6600;
+            --danger: #cc0000;
+        }
+        
+        .nav-item:hover,
+        .nav-item.active {
+            outline: 2px solid var(--white);
+        }
+        
+        .btn:focus {
+            outline: 3px solid currentColor;
+            outline-offset: 2px;
+        }
+        
+        .input:focus {
+            outline: 3px solid var(--primary);
+            outline-offset: 1px;
+        }
+    }
+    
+    /* ===== 28. PRINT STYLES ===== */
+    @media print {
+        .sidebar,
+        .sidebar-toggle,
+        .sidebar-overlay,
+        .save-fab,
+        .toast-container,
+        .loading-overlay,
+        .mode-badge {
+            display: none !important;
+        }
+        
+        .admin-container {
+            display: block;
+        }
+        
+        .main-content {
+            width: 100% !important;
+            margin: 0 !important;
+        }
+        
+        .header {
+            position: static;
+            background: var(--white) !important;
+            border-bottom: 2px solid var(--gray-900);
+            box-shadow: none !important;
+            padding: var(--space-md) 0;
+        }
+        
+        .content {
+            padding: 0;
+        }
+        
+        .card {
+            break-inside: avoid;
+            box-shadow: none !important;
+            border: 1px solid var(--gray-400);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .btn {
+            border: 1px solid currentColor;
+            background: transparent !important;
+            color: var(--gray-900) !important;
+        }
+        
+        .nav-item.active {
+            background: transparent !important;
+            color: var(--gray-900) !important;
+            font-weight: 700;
+        }
+        
+        /* Forcer les couleurs pour l'impression */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+    }
+    
+    /* ===== 29. FOCUS VISIBLE (Amélioration A11Y) ===== */
+    .nav-item:focus-visible,
+    .btn:focus-visible,
+    .input:focus-visible,
+    .sidebar-toggle:focus-visible,
+    .modal-close:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+    
+    /* ===== 30. ÉTATS DE CHARGEMENT ===== */
+    .loading {
+        position: relative;
+        pointer-events: none;
+    }
+    
+    .loading::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: inherit;
+        backdrop-filter: blur(1px);
+    }
+    
+    .loading::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--gray-300);
+        border-top: 2px solid var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 1;
+    }
+    
+    /* ===== 31. UTILITAIRES FINAUX ===== */
+    
+    /* Classes d'espacement */
+    .m-0 { margin: 0 !important; }
+    .m-1 { margin: var(--space-xs) !important; }
+    .m-2 { margin: var(--space-sm) !important; }
+    .m-3 { margin: var(--space-md) !important; }
+    .m-4 { margin: var(--space-lg) !important; }
+    .m-5 { margin: var(--space-xl) !important; }
+    
+    .mt-0 { margin-top: 0 !important; }
+    .mt-1 { margin-top: var(--space-xs) !important; }
+    .mt-2 { margin-top: var(--space-sm) !important; }
+    .mt-3 { margin-top: var(--space-md) !important; }
+    .mt-4 { margin-top: var(--space-lg) !important; }
+    .mt-5 { margin-top: var(--space-xl) !important; }
+    
+    .mb-0 { margin-bottom: 0 !important; }
+    .mb-1 { margin-bottom: var(--space-xs) !important; }
+    .mb-2 { margin-bottom: var(--space-sm) !important; }
+    .mb-3 { margin-bottom: var(--space-md) !important; }
+    .mb-4 { margin-bottom: var(--space-lg) !important; }
+    .mb-5 { margin-bottom: var(--space-xl) !important; }
+    
+    .p-0 { padding: 0 !important; }
+    .p-1 { padding: var(--space-xs) !important; }
+    .p-2 { padding: var(--space-sm) !important; }
+    .p-3 { padding: var(--space-md) !important; }
+    .p-4 { padding: var(--space-lg) !important; }
+    .p-5 { padding: var(--space-xl) !important; }
+    
+    /* Classes de texte */
+    .text-center { text-align: center !important; }
+    .text-left { text-align: left !important; }
+    .text-right { text-align: right !important; }
+    
+    .text-xs { font-size: 0.75rem !important; }
+    .text-sm { font-size: 0.875rem !important; }
+    .text-base { font-size: 1rem !important; }
+    .text-lg { font-size: 1.125rem !important; }
+    .text-xl { font-size: 1.25rem !important; }
+    
+    .font-normal { font-weight: 400 !important; }
+    .font-medium { font-weight: 500 !important; }
+    .font-semibold { font-weight: 600 !important; }
+    .font-bold { font-weight: 700 !important; }
+    
+    /* Classes de couleur */
+    .text-primary { color: var(--primary) !important; }
+    .text-success { color: var(--success) !important; }
+    .text-warning { color: var(--warning) !important; }
+    .text-danger { color: var(--danger) !important; }
+    .text-gray-500 { color: var(--gray-500) !important; }
+    .text-gray-600 { color: var(--gray-600) !important; }
+    .text-gray-700 { color: var(--gray-700) !important; }
+    .text-gray-800 { color: var(--gray-800) !important; }
+    .text-gray-900 { color: var(--gray-900) !important; }
+    
+    /* Classes d'affichage */
+    .hidden { display: none !important; }
+    .block { display: block !important; }
+    .inline { display: inline !important; }
+    .inline-block { display: inline-block !important; }
+    .flex { display: flex !important; }
+    .grid { display: grid !important; }
+    
+    /* Classes de position */
+    .relative { position: relative !important; }
+    .absolute { position: absolute !important; }
+    .fixed { position: fixed !important; }
+    .sticky { position: sticky !important; }
+    
+    /* Classes de largeur */
+    .w-full { width: 100% !important; }
+    .w-auto { width: auto !important; }
+    .w-fit { width: fit-content !important; }
+    
+    /* Classes de hauteur */
+    .h-full { height: 100% !important; }
+    .h-auto { height: auto !important; }
+    .h-fit { height: fit-content !important; }
+    
+    /* Classes de flex */
+    .flex-1 { flex: 1 !important; }
+    .flex-auto { flex: auto !important; }
+    .flex-none { flex: none !important; }
+    
+    .flex-row { flex-direction: row !important; }
+    .flex-col { flex-direction: column !important; }
+    
+    .items-start { align-items: flex-start !important; }
+    .items-center { align-items: center !important; }
+    .items-end { align-items: flex-end !important; }
+    .items-stretch { align-items: stretch !important; }
+    
+    .justify-start { justify-content: flex-start !important; }
+    .justify-center { justify-content: center !important; }
+    .justify-end { justify-content: flex-end !important; }
+    .justify-between { justify-content: space-between !important; }
+    .justify-around { justify-content: space-around !important; }
+    
+    /* Classes de gap */
+    .gap-0 { gap: 0 !important; }
+    .gap-1 { gap: var(--space-xs) !important; }
+    .gap-2 { gap: var(--space-sm) !important; }
+    .gap-3 { gap: var(--space-md) !important; }
+    .gap-4 { gap: var(--space-lg) !important; }
+    .gap-5 { gap: var(--space-xl) !important; }
+    
+    /* Classes de border radius */
+    .rounded-none { border-radius: 0 !important; }
+    .rounded-sm { border-radius: var(--radius-sm) !important; }
+    .rounded-md { border-radius: var(--radius-md) !important; }
+    .rounded-lg { border-radius: var(--radius-lg) !important; }
+    .rounded-xl { border-radius: var(--radius-xl) !important; }
+    .rounded-full { border-radius: var(--radius-full) !important; }
+    
+    /* Classes de shadow */
+    .shadow-none { box-shadow: none !important; }
+    .shadow-sm { box-shadow: var(--shadow-sm) !important; }
+    .shadow-md { box-shadow: var(--shadow-md) !important; }
+    .shadow-lg { box-shadow: var(--shadow-lg) !important; }
+    .shadow-xl { box-shadow: var(--shadow-xl) !important; }
+    
+    /* Classes d'overflow */
+    .overflow-hidden { overflow: hidden !important; }
+    .overflow-auto { overflow: auto !important; }
+    .overflow-scroll { overflow: scroll !important; }
+    .overflow-x-hidden { overflow-x: hidden !important; }
+    .overflow-y-hidden { overflow-y: hidden !important; }
+    .overflow-x-auto { overflow-x: auto !important; }
+    .overflow-y-auto { overflow-y: auto !important; }
+    
+    /* Classes de curseur */
+    .cursor-pointer { cursor: pointer !important; }
+    .cursor-not-allowed { cursor: not-allowed !important; }
+    .cursor-default { cursor: default !important; }
+    
+    /* Classes de transition */
+    .transition-none { transition: none !important; }
+    .transition-all { transition: all var(--transition-normal) !important; }
+    .transition-fast { transition: all var(--transition-fast) !important; }
+    .transition-slow { transition: all var(--transition-slow) !important; }
+    
+    /* ===== 32. ANIMATIONS PERSONNALISÉES ===== */
+    @keyframes slideInFromLeft {
+        from {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideInFromRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideInFromTop {
+        from {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideInFromBottom {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes zoomIn {
+        from {
+            transform: scale(0.9);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    /* Classes d'animation */
+    .animate-slideInFromLeft { animation: slideInFromLeft 0.5s ease-out; }
+    .animate-slideInFromRight { animation: slideInFromRight 0.5s ease-out; }
+    .animate-slideInFromTop { animation: slideInFromTop 0.5s ease-out; }
+    .animate-slideInFromBottom { animation: slideInFromBottom 0.5s ease-out; }
+    .animate-zoomIn { animation: zoomIn 0.3s ease-out; }
+    .animate-shake { animation: shake 0.5s ease-in-out; }
+    
+    </style>
+    
+    <script>
+    // =========================================
+    // SMART ADMIN - JAVASCRIPT COMPLET
+    // =========================================
+    
+    // =========================================
+    // CONFIGURATION & ÉTAT GLOBAL
+    // =========================================
+    const CONFIG = {
+        API_BASE: 'https://blog-config-api.kasri-elmehdi.workers.dev/api',
+        ADMIN_MODE: {
+            MASTER: 'master',
+            CLONE: 'clone'
+        },
+        SAFE_FIELDS: [
+            // 🏷️ SITE (6 champs)
+            'site.name', 'site.tagline', 'site.description', 'site.author', 'site.email', 'site.language',
+            
+            // 🧭 NAVIGATION (10 champs)
+            'navigation.menu_items.home', 'navigation.menu_items.recipes', 'navigation.menu_items.categories', 
+            'navigation.menu_items.about', 'navigation.menu_items.contact',
+            'navigation.page_titles.home', 'navigation.page_titles.recipes', 'navigation.page_titles.categories', 
+            'navigation.page_titles.about', 'navigation.page_titles.contact',
+            
+            // 🎨 BRANDING (3 champs)
+            'branding.logo_text', 'branding.hero_title_line1', 'branding.hero_title_line2',
+            
+            // 🌈 COLORS (6 champs)
+            'colors.primary', 'colors.primary_dark', 'colors.primary_light', 'colors.secondary', 'colors.background', 'colors.text',
+            
+            // 📱 SOCIAL (4 champs)
+            'social.facebook', 'social.instagram', 'social.twitter', 'social.pinterest',
+            
+            // 🔍 HEADER (4 champs)
+            'header.search_placeholder', 'header.search_placeholder_mobile', 'header.follow_button_text', 'header.menu_aria_label',
+            
+            // 🏠 HERO (6 champs)
+            'hero.badge_text', 'hero.title_line1', 'hero.title_line2', 'hero.subtitle', 'hero.subtitle_highlight', 'hero.cta_primary_text',
+            
+            // 📋 HOMEPAGE (9 champs)
+            'homepage.latest_recipes.title', 'homepage.latest_recipes.description', 'homepage.popular_recipes.title', 
+            'homepage.popular_recipes.empty_message', 'homepage.categories_section.title', 'homepage.newsletter.title', 
+            'homepage.newsletter.description', 'homepage.newsletter.email_placeholder', 'homepage.newsletter.button_text',
+            
+            // 👤 ABOUT (8 champs)
+            'about_section.badge_text', 'about_section.title', 'about_section.chef_name', 'about_section.chef_intro',
+            'about_section.chef_description', 'about_section.philosophy_title', 'about_section.philosophy_text', 'about_section.image_alt',
+            
+            // 📄 PAGES & LISTES (8 champs)
+            'list_pages.recipes_title', 'list_pages.recipes_description', 'list_pages.categories_title_prefix', 'list_pages.no_recipes',
+            'list_pages.breadcrumb.home', 'list_pages.breadcrumb.categories', 'categories_page.title', 'tags_page.all_tags_title',
+            
+            // 🦶 FOOTER (18 champs)
+            'footer.description', 'footer.navigation_title', 'footer.categories_title', 'footer.social_title',
+            'footer.newsletter_title', 'footer.newsletter_description', 'footer.newsletter_button', 'footer.copyright_tagline',
+            'footer.copyright_prefix', 'footer.copyright_suffix',
+            'footer.legal_links.privacy', 'footer.legal_links.terms', 'footer.legal_links.legal', 'footer.legal_links.contact',
+            'footer.legal_links_text.privacy', 'footer.legal_links_text.terms', 'footer.legal_links_text.legal', 'footer.legal_links_text.contact',
+            
+            // 🔍 SEARCH COMPONENTS (4 champs)
+            'components.search.no_results', 'components.search.loading', 'components.search.clear_label', 'components.search.no_results_emoji',
+            
+            // 📞 CONTACT (6 champs)
+            'contact_page.title', 'contact_page.subtitle', 'contact_page.form.name_label', 
+            'contact_page.form.email_label', 'contact_page.form.message_label', 'contact_page.form.submit_button',
+            
+            // 🏷️ TAGS PAGES (3 champs)
+            'tags_page.title_prefix', 'tags_page.no_recipes'
+        ]
+    };
+    
+    // État global
+    let currentConfig = {};
+    let modifiedFields = new Set();
+    let adminMode = null;
+    let sitesData = {};
+    let autoSaveInterval = null;
+    
+    // =========================================
+    // INITIALISATION
+    // =========================================
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 Smart Admin initialisé');
+
+        setupResponsive();
+        createOverlay();
+        // Détecter le mode admin
+        detectAdminMode();
+        
+        // Charger la configuration
+        loadConfig();
+        
+        // Setup des événements
+        setupGlobalEvents();
+        
+        // Auto-sauvegarde
+        startAutoSave();
+        
+        // Raccourcis clavier
+        setupKeyboardShortcuts();
+    });
+    
+    // =========================================
+    // DÉTECTION MODE ADMIN
+    // =========================================
+    function detectAdminMode() {
+        const hostname = window.location.hostname;
+        const modeBadge = document.getElementById('mode-badge');
+        const masterNav = document.getElementById('master-nav');
+        
+        if (hostname.includes('recettes-blog-test') || hostname.includes('localhost')) {
+            adminMode = CONFIG.ADMIN_MODE.MASTER;
+            modeBadge.textContent = '👑 Site Mère';
+            modeBadge.className = 'mode-badge master';
+            if (masterNav) masterNav.style.display = 'block';
+            console.log('📊 Mode MASTER détecté');
+        } else {
+            adminMode = CONFIG.ADMIN_MODE.CLONE;
+            modeBadge.textContent = '📱 Site Cloné';
+            modeBadge.className = 'mode-badge clone';
+            if (masterNav) masterNav.style.display = 'none';
+            console.log('📱 Mode CLONE détecté');
+        }
+    }
+    function setupResponsive() {
+        let isMobile = window.innerWidth < 1024;
+        handleResponsiveChange(isMobile);
+        
+        window.addEventListener('resize', debounce(() => {
+            const newIsMobile = window.innerWidth < 1024;
+            if (newIsMobile !== isMobile) {
+                isMobile = newIsMobile;
+                handleResponsiveChange(isMobile);
+            }
+        }, 250));
+    }
+    
+    function handleResponsiveChange(isMobile) {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        if (isMobile) {
+            sidebar?.classList.remove('collapsed');
+            sidebar?.classList.remove('mobile-open');
+            overlay?.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            sidebar?.classList.remove('mobile-open');
+            overlay?.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+        
+    function setupResponsive() {
+        let isMobile = window.innerWidth < 1024;
+        
+        // Détection initiale
+        handleResponsiveChange(isMobile);
+        
+        // Écoute changements
+        window.addEventListener('resize', debounce(() => {
+            const newIsMobile = window.innerWidth < 1024;
+            if (newIsMobile !== isMobile) {
+                isMobile = newIsMobile;
+                handleResponsiveChange(isMobile);
+            }
+        }, 250));
+    }
+    
+    function handleResponsiveChange(isMobile) {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        if (isMobile) {
+            // Mobile: fermer sidebar si ouverte
+            sidebar?.classList.remove('collapsed');
+            sidebar?.classList.remove('mobile-open');
+            overlay?.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            // Desktop: supprimer classes mobile
+            sidebar?.classList.remove('mobile-open');
+            overlay?.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+    // =========================================
+    // CHARGEMENT CONFIGURATION
+    // =========================================
+    async function loadConfig() {
+        showLoading('Chargement de la configuration...');
+        
+        try {
+            // ✅ Requête simple sans headers CORS
+            const response = await fetch(`${CONFIG.API_BASE}/get-config`);
+    
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            
+            if (result.success && result.config) {
+                currentConfig = result.config;
+                populateFormFields(result.config);
+                updateFieldsCount(result.fields_count);
+                updateConfigStatus('success', 'Configuration chargée');
+                showToast('✅ Configuration chargée avec succès', 'success');
+            } else {
+                throw new Error(result.error || 'Erreur lors du chargement');
+            }
+    
+        } catch (error) {
+            console.error('❌ Erreur loadConfig:', error);
+            updateConfigStatus('danger', 'Erreur configuration');
+            
+            // ✅ Message d'erreur plus clair
+            if (error.message.includes('fetch')) {
+                showToast('❌ Impossible de contacter le serveur. Vérifiez votre connexion.', 'error');
+            } else {
+                showToast('❌ Erreur: ' + error.message, 'error');
+            }
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    // =========================================
+    // REMPLISSAGE DES FORMULAIRES
+    // =========================================
+    function populateFormFields(config) {
+        console.log('📝 Remplissage des champs...');
+        
+        Object.entries(config).forEach(([fieldName, value]) => {
+            const field = document.getElementById(fieldName);
+            if (field) {
+                field.value = value;
+                field.classList.remove('modified');
+            } else {
+                console.warn(`⚠️ Champ non trouvé: ${fieldName}`);
+            }
+        });
+    
+        // Réinitialiser l'état des modifications
+        modifiedFields.clear();
+        updateSaveFab();
+        updateModifiedCount();
+    }
+    
+    // =========================================
+    // GESTION DES MODIFICATIONS
+    // =========================================
+    function setupGlobalEvents() {
+        // Écouter tous les champs avec data-field
+        document.querySelectorAll('[data-field]').forEach(field => {
+            field.addEventListener('input', function() {
+                markFieldModified(this);
+            });
+            
+            field.addEventListener('change', function() {
+                markFieldModified(this);
+            });
+        });
+    
+        // Auto-génération nom technique dans la modal
+        const newSiteName = document.getElementById('new-site-name');
+        const newRepoName = document.getElementById('new-repo-name');
+        
+        if (newSiteName && newRepoName) {
+            newSiteName.addEventListener('input', function() {
+                const techName = this.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '');
+                newRepoName.value = techName;
+            });
+        }
+    
+        // Fermer modal en cliquant à l'extérieur
+        const modal = document.getElementById('new-site-modal');
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeNewSiteModal();
+                }
+            });
+        }
+    
+        // Gestion du formulaire de création de site
+        const newSiteForm = document.getElementById('new-site-form');
+        if (newSiteForm) {
+            newSiteForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                createNewSite();
+            });
+        }
+    }
+    function setupTouchEvents() {
+        // Swipe pour ouvrir/fermer sidebar mobile
+        let startX = 0;
+        let startY = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!startX || !startY) return;
+            
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const diffX = startX - currentX;
+            const diffY = startY - currentY;
+            
+            // Swipe horizontal uniquement
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                const isMobile = window.innerWidth < 1024;
+                if (!isMobile) return;
+                
+                const sidebar = document.getElementById('sidebar');
+                
+                if (diffX > 0 && startX < 50) {
+                    // Swipe right to left depuis le bord gauche -> ouvrir
+                    toggleSidebar();
+                } else if (diffX < 0 && sidebar?.classList.contains('mobile-open')) {
+                    // Swipe left to right avec sidebar ouverte -> fermer
+                    closeSidebar();
+                }
+                
+                startX = 0;
+                startY = 0;
+            }
+        }, { passive: true });
+    }
+    
+    
+    function markFieldModified(field) {
+        const fieldName = field.dataset.field;
+        
+        if (fieldName) {
+            modifiedFields.add(fieldName);
+            field.classList.add('modified');
+            updateSaveFab();
+            updateModifiedCount();
+            
+            console.log(`📝 Modifié: ${fieldName} = ${field.value}`);
+        }
+    }
+    
+    function updateSaveFab() {
+        const saveFab = document.getElementById('save-fab');
+        const saveAllBtn = document.getElementById('save-all-btn');
+        
+        if (modifiedFields.size > 0) {
+            saveFab.classList.add('modified');
+            if (saveAllBtn) {
+                saveAllBtn.style.background = 'linear-gradient(135deg, var(--warning) 0%, #d97706 100%)';
+            }
+        } else {
+            saveFab.classList.remove('modified');
+            if (saveAllBtn) {
+                saveAllBtn.style.background = 'linear-gradient(135deg, var(--success) 0%, #059669 100%)';
+            }
+        }
+    }
+    
+    function updateModifiedCount() {
+        const countEl = document.getElementById('modified-count');
+        if (countEl) {
+            countEl.textContent = modifiedFields.size;
+        }
+    }
+    
+    function updateFieldsCount(count) {
+        const countEl = document.getElementById('fields-count');
+        if (countEl) {
+            countEl.textContent = count || 88;
+        }
+    }
+    
+    // =========================================
+    // SAUVEGARDE
+    // =========================================
+    async function saveAllChanges() {
+        if (modifiedFields.size === 0) {
+            showToast('ℹ️ Aucune modification à sauvegarder', 'warning');
+            return;
+        }
+    
+        showLoading(`Sauvegarde de ${modifiedFields.size} modifications...`);
+    
+        try {
+            const fieldsToSave = {};
+            
+            modifiedFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (field && field.value.trim()) {
+                    fieldsToSave[fieldName] = field.value.trim();
+                }
+            });
+    
+            console.log('💾 Sauvegarde:', fieldsToSave);
+    
+            const response = await fetch(`${CONFIG.API_BASE}/update-config`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(fieldsToSave)
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log('✅ Sauvegarde réussie:', result);
+    
+            // Marquer les champs comme sauvegardés
+            modifiedFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (field) {
+                    field.classList.remove('modified');
+                }
+            });
+    
+            modifiedFields.clear();
+            updateSaveFab();
+            updateModifiedCount();
+            updateConfigStatus('success', 'Sauvegardé');
+            
+            showToast(`✅ ${Object.keys(fieldsToSave).length} modifications sauvegardées !`, 'success');
+    
+        } catch (error) {
+            console.error('❌ Erreur sauvegarde:', error);
+            showToast('❌ Erreur lors de la sauvegarde: ' + error.message, 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    // =========================================
+    // NAVIGATION
+    // =========================================
+    function showSection(sectionName) {
+        console.log(`📋 Affichage section: ${sectionName}`);
+    
+        // Masquer toutes les sections
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
+        });
+    
+        // Désactiver tous les nav-items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+    
+        // Afficher la section demandée
+        const targetSection = document.getElementById(`section-${sectionName}`);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+    
+        // Activer l'item de navigation
+        const activeNavItem = document.querySelector(`[data-section="${sectionName}"]`);
+        if (activeNavItem) {
+            activeNavItem.classList.add('active');
+        }
+    
+        // Mettre à jour le header
+        updatePageHeader(sectionName);
+    
+        // Charger les données spécifiques si nécessaire
+        if (sectionName === 'sites' && adminMode === CONFIG.ADMIN_MODE.MASTER) {
+            loadSites();
+        }
+    }
+    
+    function updatePageHeader(sectionName) {
+        const titles = {
+            'dashboard': { title: 'Tableau de Bord', subtitle: 'Vue d\'ensemble de votre site' },
+            'identity': { title: 'Identité du Site', subtitle: 'Informations principales et réseaux sociaux' },
+            'design': { title: 'Design & Couleurs', subtitle: 'Image de marque et palette de couleurs' },
+            'content': { title: 'Contenu', subtitle: 'Textes de la page d\'accueil et sections' },
+            'interface': { title: 'Interface', subtitle: 'Navigation, menus et textes d\'interface' },
+            'sites': { title: 'Gestion des Sites', subtitle: 'Créer et gérer vos sites multiples' },
+            'monitoring': { title: 'Monitoring', subtitle: 'Surveillance en temps réel de vos sites' },
+            'yaml': { title: 'Mode Expert YAML', subtitle: 'Configuration avancée directe' }
+        };
+    
+        const pageData = titles[sectionName] || { title: 'Smart Admin', subtitle: 'Interface d\'administration' };
+        
+        const titleEl = document.getElementById('page-title');
+        const subtitleEl = document.getElementById('page-subtitle');
+        
+        if (titleEl) titleEl.textContent = pageData.title;
+        if (subtitleEl) subtitleEl.textContent = pageData.subtitle;
+    }
+    
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay') || createOverlay();
+        const isMobile = window.innerWidth < 1024;
+        
+        if (isMobile) {
+            // Mobile: toggle overlay
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
+        } else {
+            // Desktop: collapse
+            sidebar.classList.toggle('collapsed');
+            const toggleIcon = document.getElementById('toggle-icon');
+            if (toggleIcon) {
+                toggleIcon.textContent = sidebar.classList.contains('collapsed') ? '→' : '←';
+            }
+        }
+    }
+    
+    function createOverlay() {
+        const overlay = document.createElement('div');
+        overlay.id = 'sidebar-overlay';
+        overlay.className = 'sidebar-overlay';
+        overlay.onclick = closeSidebar;
+        document.body.appendChild(overlay);
+        return overlay;
+    }
+    
+    function closeSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar?.classList.remove('mobile-open');
+        overlay?.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+        
+    function quickEdit(section) {
+        showSection(section);
+        showToast(`🚀 Accès rapide à la section ${section}`, 'success');
+    }
+    
+    // =========================================
+    // GESTION DES SITES (MODE MASTER)
+    // =========================================
+    async function loadSites() {
+        if (adminMode !== CONFIG.ADMIN_MODE.MASTER) return;
+    
+        showLoading('Chargement des sites...');
+    
+        try {
+            const response = await fetch(`${CONFIG.API_BASE}/list-sites`);
+            
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log('🌐 Sites chargés:', result);
+    
+            sitesData = result.sites || {};
+            displaySites(sitesData);
+            updateSitesCount(Object.keys(sitesData).length);
+    
+        } catch (error) {
+            console.error('❌ Erreur chargement sites:', error);
+            showToast('❌ Erreur lors du chargement des sites: ' + error.message, 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    function displaySites(sites) {
+        const sitesGrid = document.getElementById('sites-grid');
+        if (!sitesGrid) return;
+    
+        sitesGrid.innerHTML = '';
+    
+        // Carte "Créer nouveau site"
+        const newSiteCard = document.createElement('div');
+        newSiteCard.className = 'site-card';
+        newSiteCard.style.border = '3px dashed var(--primary)';
+        newSiteCard.style.cursor = 'pointer';
+        newSiteCard.onclick = openNewSiteModal;
+        newSiteCard.innerHTML = `
+            <div style="padding: 3rem; text-align: center; color: var(--primary);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">➕</div>
+                <h3 style="margin-bottom: 0.5rem;">Créer un Nouveau Site</h3>
+                <p style="color: var(--gray-500);">Configuration en 2 minutes</p>
+            </div>
+        `;
+        sitesGrid.appendChild(newSiteCard);
+    
+        // Cartes des sites existants
+        Object.values(sites).forEach(site => {
+            const siteCard = createSiteCard(site);
+            sitesGrid.appendChild(siteCard);
+        });
+    }
+    
+    function createSiteCard(site) {
+        const card = document.createElement('div');
+        card.className = 'site-card';
+        card.innerHTML = `
+            <div class="site-card-header">
+                <div class="site-name">${site.name}</div>
+                <div class="site-url">${site.domain}</div>
+            </div>
+            <div class="site-card-body">
+                <div class="site-actions">
+                    <a href="${site.admin_url}" class="btn btn-primary btn-sm" target="_blank">
+                        ⚙️ Admin
+                    </a>
+                    <a href="${site.deployment_url}" class="btn btn-secondary btn-sm" target="_blank">
+                        🌐 Voir le Site
+                    </a>
+                    <a href="${site.github_url}" class="btn btn-secondary btn-sm" target="_blank">
+                        📁 GitHub
+                    </a>
+                    <button class="btn btn-danger btn-sm" onclick="confirmDeleteSite('${site.id}', '${site.name}')">
+                        🗑️ Supprimer
+                    </button>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+    
+    function updateSitesCount(count) {
+        const countEl = document.getElementById('sites-count');
+        const totalSitesEl = document.getElementById('total-sites');
+        
+        if (countEl) countEl.textContent = count;
+        if (totalSitesEl) totalSitesEl.textContent = count;
+    }
+    
+    function refreshSites() {
+        loadSites();
+        showToast('🔄 Liste des sites actualisée', 'success');
+    }
+    
+    // =========================================
+    // MODAL NOUVEAU SITE
+    // =========================================
+    function openNewSiteModal() {
+        const modal = document.getElementById('new-site-modal');
+        if (modal) {
+            modal.classList.add('show');
+            // Focus sur le premier champ
+            const firstInput = modal.querySelector('input');
+            if (firstInput) {
+                setTimeout(() => firstInput.focus(), 100);
+            }
+        }
+    }
+    
+    function closeNewSiteModal() {
+        const modal = document.getElementById('new-site-modal');
+        if (modal) {
+            modal.classList.remove('show');
+            // Reset du formulaire
+            const form = document.getElementById('new-site-form');
+            if (form) form.reset();
+        }
+    }
+    
+    async function createNewSite() {
+        const siteData = {
+            site_name: document.getElementById('new-site-name').value,
+            repo_name: document.getElementById('new-repo-name').value,
+            description: document.getElementById('new-site-description').value,
+            hero_line1: document.getElementById('new-hero-line1').value,
+            hero_line2: document.getElementById('new-hero-line2').value,
+            primary_color: document.getElementById('new-primary-color').value
+        };
+    
+        if (!siteData.site_name || !siteData.repo_name) {
+            showToast('❌ Nom du site et nom technique requis', 'error');
+            return;
+        }
+    
+        showLoading('Création du site en cours...');
+    
+        try {
+            const response = await fetch(`${CONFIG.API_BASE}/clone-site`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(siteData)
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log('✅ Site créé:', result);
+    
+            showToast(`✅ Site "${siteData.site_name}" créé avec succès !`, 'success');
+            closeNewSiteModal();
+    
+            // Recharger la liste des sites
+            setTimeout(() => {
+                loadSites();
+            }, 2000);
+    
+        } catch (error) {
+            console.error('❌ Erreur création site:', error);
+            showToast('❌ Erreur lors de la création: ' + error.message, 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    async function confirmDeleteSite(siteId, siteName) {
+        if (!confirm(`Êtes-vous sûr de vouloir supprimer le site "${siteName}" ?\n\nCette action est irréversible !`)) {
+            return;
+        }
+    
+        showLoading('Suppression en cours...');
+    
+        try {
+            const response = await fetch(`${CONFIG.API_BASE}/delete-site`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ site_id: siteId })
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log('✅ Site supprimé:', result);
+    
+            showToast(`✅ Site "${siteName}" supprimé avec succès`, 'success');
+    
+            // Recharger la liste des sites
+            setTimeout(() => {
+                loadSites();
+            }, 1000);
+    
+        } catch (error) {
+            console.error('❌ Erreur suppression site:', error);
+            showToast('❌ Erreur lors de la suppression: ' + error.message, 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    // =========================================
+    // MODE YAML EXPERT
+    // =========================================
+    async function loadYamlConfig() {
+        showLoading('Chargement de la configuration YAML...');
+    
+        try {
+            const response = await fetch(`${CONFIG.API_BASE}/get-config`);
+            
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            
+            if (result.success && result.config) {
+                const yamlContent = generateYamlFromConfig(result.config);
+                const yamlTextarea = document.getElementById('yaml-content');
+                
+                if (yamlTextarea) {
+                    yamlTextarea.value = yamlContent;
+                    showToast('✅ Configuration YAML chargée', 'success');
+                }
+            } else {
+                throw new Error(result.error || 'Erreur lors du chargement');
+            }
+    
+        } catch (error) {
+            console.error('❌ Erreur loadYamlConfig:', error);
+            showToast('❌ Erreur: ' + error.message, 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    function generateYamlFromConfig(config) {
+        const sections = {};
+        
+        // Grouper les champs par section
+        Object.entries(config).forEach(([fieldName, value]) => {
+            const parts = fieldName.split('.');
+            
+            if (parts.length === 2) {
+                const [section, field] = parts;
+                if (!sections[section]) sections[section] = {};
+                sections[section][field] = value;
+            } else if (parts.length === 3) {
+                const [section, subsection, field] = parts;
+                if (!sections[section]) sections[section] = {};
+                if (!sections[section][subsection]) sections[section][subsection] = {};
+                sections[section][subsection][field] = value;
+            }
+        });
+    
+        // Générer le YAML
+        let yaml = '# Configuration sécurisée (88 champs autorisés)\n\n';
+        
+        Object.entries(sections).forEach(([sectionName, sectionData]) => {
+            yaml += `${sectionName}:\n`;
+            
+            Object.entries(sectionData).forEach(([key, value]) => {
+                if (typeof value === 'object') {
+                    yaml += `  ${key}:\n`;
+                    Object.entries(value).forEach(([subKey, subValue]) => {
+                        yaml += `    ${subKey}: "${subValue}"\n`;
+                    });
+                } else {
+                    yaml += `  ${key}: "${value}"\n`;
+                }
+            });
+            
+            yaml += '\n';
+        });
+        
+        return yaml;
+    }
+    
+    async function saveYamlConfig() {
+        const yamlTextarea = document.getElementById('yaml-content');
+        
+        if (!yamlTextarea || !yamlTextarea.value.trim()) {
+            showToast('❌ Le contenu YAML est vide', 'error');
+            return;
+        }
+    
+        showLoading('Analyse et sauvegarde du YAML...');
+    
+        try {
+            const yamlContent = yamlTextarea.value;
+            const parsedConfig = parseYamlContent(yamlContent);
+    
+            console.log('📄 Configuration parsée:', parsedConfig);
+    
+            if (Object.keys(parsedConfig).length === 0) {
+                throw new Error('Aucun champ valide trouvé dans le YAML');
+            }
+    
+            const response = await fetch(`${CONFIG.API_BASE}/update-config`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(parsedConfig)
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            console.log('✅ Sauvegarde YAML réussie:', result);
+    
+            showToast(`✅ Configuration YAML sauvegardée (${Object.keys(parsedConfig).length} champs)!`, 'success');
+    
+            // Recharger la config pour synchroniser
+            setTimeout(() => {
+                loadConfig();
+            }, 1000);
+    
+        } catch (error) {
+            console.error('❌ Erreur YAML:', error);
+            showToast('❌ Erreur YAML: ' + error.message, 'error');
+        } finally {
+            hideLoading();
+        }
+    }
+    
+    function parseYamlContent(yamlContent) {
+        const config = {};
+        const lines = yamlContent.split('\n');
+        
+        let currentSection = '';
+        let currentSubsection = '';
+        
+        lines.forEach(line => {
+            const trimmedLine = line.trim();
+            
+            if (!trimmedLine || trimmedLine.startsWith('#')) return;
+            
+            // Section principale
+            if (trimmedLine.endsWith(':') && !trimmedLine.includes(' ') && !line.startsWith(' ')) {
+                currentSection = trimmedLine.replace(':', '');
+                currentSubsection = '';
+                return;
+            }
+            
+            // Sous-section
+            if (trimmedLine.endsWith(':') && line.startsWith('  ') && !line.startsWith('    ')) {
+                currentSubsection = trimmedLine.replace(':', '');
+                return;
+            }
+            
+            // Champ avec valeur
+            if (trimmedLine.includes(':')) {
+                const colonIndex = trimmedLine.indexOf(':');
+                const key = trimmedLine.substring(0, colonIndex).trim();
+                let value = trimmedLine.substring(colonIndex + 1).trim();
+                
+                // Nettoyer les guillemets
+                if ((value.startsWith('"') && value.endsWith('"')) || 
+                    (value.startsWith("'") && value.endsWith("'"))) {
+                    value = value.slice(1, -1);
+                }
+                
+                let fieldName = '';
+                if (currentSubsection) {
+                    fieldName = `${currentSection}.${currentSubsection}.${key}`;
+                } else if (currentSection) {
+                    fieldName = `${currentSection}.${key}`;
+                }
+                
+                if (fieldName && value && CONFIG.SAFE_FIELDS.includes(fieldName)) {
+                    config[fieldName] = value;
+                }
+            }
+        });
+        
+        return config;
+    }
+    
+    
+    function copyYamlConfig() {
+        const yamlTextarea = document.getElementById('yaml-content');
+        
+        if (!yamlTextarea || !yamlTextarea.value.trim()) {
+            showToast('❌ Aucun contenu YAML à copier', 'error');
+            return;
+        }
+    
+        navigator.clipboard.writeText(yamlTextarea.value).then(() => {
+            showToast('✅ Configuration copiée dans le presse-papiers !', 'success');
+        }).catch(err => {
+            console.error('❌ Erreur copie:', err);
+            showToast('❌ Erreur lors de la copie', 'error');
+        });
+    }
+    
+    function downloadYamlConfig() {
+        const yamlTextarea = document.getElementById('yaml-content');
+        
+        if (!yamlTextarea || !yamlTextarea.value.trim()) {
+            showToast('❌ Aucun contenu YAML à télécharger', 'error');
+            return;
+        }
+    
+        const blob = new Blob([yamlTextarea.value], { type: 'text/yaml' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'config.yaml';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showToast('✅ Configuration téléchargée !', 'success');
+    }
+    
+    // =========================================
+    // INTERFACE UTILISATEUR
+    // =========================================
+    function showLoading(message) {
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingText = document.getElementById('loading-text');
+        
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('show');
+        }
+        
+        if (loadingText) {
+            loadingText.textContent = message;
+        }
+    }
+    
+    function hideLoading() {
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.remove('show');
+        }
+    }
+    
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) return;
+    
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <div style="font-weight: 600;">${message}</div>
+        `;
+    
+        toastContainer.appendChild(toast);
+    
+        // Animation d'entrée
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+    
+        // Suppression automatique
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 4000);
+    }
+    
+    function updateConfigStatus(type, message) {
+        const statusEl = document.getElementById('config-status');
+        if (!statusEl) return;
+    
+        const dotEl = statusEl.querySelector('.status-dot');
+        const textEl = statusEl.querySelector('span');
+    
+        if (dotEl) {
+            dotEl.className = `status-dot ${type}`;
+        }
+        
+        if (textEl) {
+            textEl.textContent = message;
+        }
+    }
+    
+    // =========================================
+    // AUTO-SAUVEGARDE
+    // =========================================
+    function startAutoSave() {
+        // Sauvegarde automatique toutes les 5 minutes si des modifications existent
+        autoSaveInterval = setInterval(() => {
+            if (modifiedFields.size > 0) {
+                console.log('🤖 Auto-sauvegarde déclenchée');
+                saveAllChanges();
+            }
+        }, 5 * 60 * 1000); // 5 minutes
+    }
+    
+    function stopAutoSave() {
+        if (autoSaveInterval) {
+            clearInterval(autoSaveInterval);
+            autoSaveInterval = null;
+        }
+    }
+    
+    // =========================================
+    // RACCOURCIS CLAVIER
+    // =========================================
+    function setupKeyboardShortcuts() {
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+S pour sauvegarder
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveAllChanges();
+            }
+            
+            // Escape pour fermer la modal
+            if (e.key === 'Escape') {
+                closeNewSiteModal();
+            }
+            
+            // Ctrl+N pour nouveau site (mode master seulement)
+            if (e.ctrlKey && e.key === 'n' && adminMode === CONFIG.ADMIN_MODE.MASTER) {
+                e.preventDefault();
+                openNewSiteModal();
+            }
+            
+            // Ctrl+R pour recharger la config
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                loadConfig();
+            }
+            
+            // Navigation avec les chiffres (Ctrl+1-8)
+            if (e.ctrlKey && e.key >= '1' && e.key <= '8') {
+                e.preventDefault();
+                const sections = ['dashboard', 'identity', 'design', 'content', 'interface', 'sites', 'monitoring', 'yaml'];
+                const sectionIndex = parseInt(e.key) - 1;
+                if (sections[sectionIndex]) {
+                    showSection(sections[sectionIndex]);
+                }
+            }
+        });
+    }
+    
+    // =========================================
+    // VALIDATION FORMULAIRES
+    // =========================================
+    function validateField(field) {
+        const value = field.value.trim();
+        const fieldType = field.type;
+        const isRequired = field.hasAttribute('required');
+        
+        // Reset des classes d'erreur
+        field.classList.remove('error', 'success');
+        
+        if (isRequired && !value) {
+            field.classList.add('error');
+            return false;
+        }
+        
+        // Validation spécifique par type
+        switch (fieldType) {
+            case 'email':
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (value && !emailRegex.test(value)) {
+                    field.classList.add('error');
+                    return false;
+                }
+                break;
+                
+            case 'url':
+                if (value && !isValidUrl(value)) {
+                    field.classList.add('error');
+                    return false;
+                }
+                break;
+        }
+        
+        if (value) {
+            field.classList.add('success');
+        }
+        
+        return true;
+    }
+    
+    function isValidUrl(string) {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+    
+    // =========================================
+    // GESTION DES ERREURS
+    // =========================================
+    function handleGlobalError(error) {
+        console.error('❌ Erreur globale:', error);
+        showToast('❌ Une erreur inattendue s\'est produite', 'error');
+        hideLoading();
+    }
+    
+    // Capture des erreurs non gérées
+    window.addEventListener('error', function(e) {
+        handleGlobalError(e.error);
+    });
+    
+    window.addEventListener('unhandledrejection', function(e) {
+        handleGlobalError(e.reason);
+    });
+    
+    // =========================================
+    // UTILITAIRES
+    // =========================================
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    function throttle(func, limit) {
+        let lastFunc;
+        let lastRan;
+        return function(...args) {
+            if (!lastRan) {
+                func.apply(this, args);
+                lastRan = Date.now();
+            } else {
+                clearTimeout(lastFunc);
+                lastFunc = setTimeout(() => {
+                    if ((Date.now() - lastRan) >= limit) {
+                        func.apply(this, args);
+                        lastRan = Date.now();
+                    }
+                }, limit - (Date.now() - lastRan));
+            }
+        }
+    }
+    
+    // =========================================
+    // FONCTIONS DE MONITORING
+    // =========================================
+    function updateMonitoringStats() {
+        // Cette fonction sera étendue quand le monitoring sera implémenté
+        const monitorSites = document.getElementById('monitor-sites');
+        const monitorDeploys = document.getElementById('monitor-deploys');
+        const monitorUptime = document.getElementById('monitor-uptime');
+        
+        if (monitorSites && sitesData) {
+            monitorSites.textContent = Object.keys(sitesData).length;
+        }
+        
+        // Stats factices pour l'instant
+        if (monitorDeploys) {
+            monitorDeploys.textContent = Math.floor(Math.random() * 10);
+        }
+        
+        if (monitorUptime) {
+            monitorUptime.textContent = '99.9%';
+        }
+    }
+    
+    // =========================================
+    // RECHERCHE ET FILTRAGE
+    // =========================================
+    function setupSearch() {
+        // Fonctionnalité de recherche dans les champs
+        const searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.placeholder = 'Rechercher un champ...';
+        searchInput.className = 'input';
+        searchInput.style.marginBottom = '1rem';
+        
+        searchInput.addEventListener('input', debounce(function() {
+            const query = this.value.toLowerCase();
+            filterFields(query);
+        }, 300));
+        
+        // Ajouter la recherche dans le header si nécessaire
+        // Cette fonctionnalité peut être activée selon les besoins
+    }
+    
+    function filterFields(query) {
+        const allFields = document.querySelectorAll('[data-field]');
+        
+        allFields.forEach(field => {
+            const fieldName = field.dataset.field.toLowerCase();
+            const label = field.closest('.form-group')?.querySelector('.label');
+            const labelText = label?.textContent.toLowerCase() || '';
+            
+            const matches = fieldName.includes(query) || labelText.includes(query);
+            
+            const formGroup = field.closest('.form-group');
+            if (formGroup) {
+                formGroup.style.display = matches || !query ? 'block' : 'none';
+            }
+        });
+    }
+    
+    // =========================================
+    // SAUVEGARDE EN LOCAL (BACKUP)
+    // =========================================
+    function saveToLocalStorage() {
+        try {
+            const backupData = {
+                config: currentConfig,
+                modified: Array.from(modifiedFields),
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('smart-admin-backup', JSON.stringify(backupData));
+            console.log('💾 Sauvegarde locale effectuée');
+        } catch (error) {
+            console.warn('⚠️ Impossible de sauvegarder en local:', error);
+        }
+    }
+    
+    function loadFromLocalStorage() {
+        try {
+            const backupData = localStorage.getItem('smart-admin-backup');
+            if (backupData) {
+                const parsed = JSON.parse(backupData);
+                console.log('📥 Sauvegarde locale trouvée:', parsed.timestamp);
+                return parsed;
+            }
+        } catch (error) {
+            console.warn('⚠️ Impossible de charger la sauvegarde locale:', error);
+        }
+        return null;
+    }
+    
+    // =========================================
+    // NETTOYAGE À LA FERMETURE
+    // =========================================
+    window.addEventListener('beforeunload', function(e) {
+        if (modifiedFields.size > 0) {
+            // Sauvegarder en local avant fermeture
+            saveToLocalStorage();
+            
+            // Demander confirmation si modifications non sauvegardées
+            e.preventDefault();
+            e.returnValue = 'Vous avez des modifications non sauvegardées. Voulez-vous vraiment quitter ?';
+            return e.returnValue;
+        }
+        
+        // Nettoyer les intervalles
+        stopAutoSave();
+    });
+    
+    // =========================================
+    // EXTENSIONS & HOOKS
+    // =========================================
+    const SmartAdminHooks = {
+        beforeSave: [],
+        afterSave: [],
+        beforeLoad: [],
+        afterLoad: []
+    };
+    
+    function addHook(type, callback) {
+        if (SmartAdminHooks[type]) {
+            SmartAdminHooks[type].push(callback);
+        }
+    }
+    
+    function runHooks(type, data) {
+        if (SmartAdminHooks[type]) {
+            SmartAdminHooks[type].forEach(callback => {
+                try {
+                    callback(data);
+                } catch (error) {
+                    console.warn(`Hook ${type} failed:`, error);
+                }
+            });
+        }
+    }
+    
+    // =========================================
+    // API HELPERS
+    // =========================================
+    async function apiRequest(endpoint, options = {}) {
+        const defaultOptions = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        
+        const finalOptions = { ...defaultOptions, ...options };
+        
+        try {
+            const response = await fetch(`${CONFIG.API_BASE}${endpoint}`, finalOptions);
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP ${response.status}`);
+            }
+            
+            return await response.json();
+        } catch (error) {
+            console.error(`API Error (${endpoint}):`, error);
+            throw error;
+        }
+    }
+    
+    // =========================================
+    // INITIALISATION FINALE
+    // =========================================
+    function initializeSmartAdmin() {
+        console.log('🎯 Initialisation finale Smart Admin...');
+
+        setupTouchEvents();
+        // Charger sauvegarde locale si disponible
+        const backup = loadFromLocalStorage();
+        if (backup && backup.modified.length > 0) {
+            console.log('🔄 Restauration des modifications depuis la sauvegarde locale');
+            backup.modified.forEach(fieldName => {
+                modifiedFields.add(fieldName);
+                const field = document.getElementById(fieldName);
+                if (field) {
+                    field.classList.add('modified');
+                }
+            });
+            updateSaveFab();
+            updateModifiedCount();
+            showToast('🔄 Modifications restaurées depuis la sauvegarde locale', 'warning');
+        }
+        
+        // Initialiser les validations
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('blur', () => validateField(field));
+        });
+        
+        // Mettre à jour les stats de monitoring
+        updateMonitoringStats();
+        
+        // Démarrer la surveillance périodique
+        setInterval(updateMonitoringStats, 30000); // Toutes les 30 secondes
+        
+        console.log('✅ Smart Admin complètement initialisé');
+    }
+    
+    // Lancer l'initialisation finale après le DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(initializeSmartAdmin, 1000);
+    });
+    
+    // =========================================
+    // LOGS DE DÉMARRAGE
+    // =========================================
+    console.log('🚀 Smart Admin JavaScript chargé');
+    console.log('📊 Configuration:', CONFIG);
+    console.log('🎯 Champs sécurisés:', CONFIG.SAFE_FIELDS.length);
+    console.log('✅ Toutes les fonctions initialisées');
+    
+    // Export global pour debugging
+    window.SmartAdmin = {
+        CONFIG,
+        currentConfig,
+        modifiedFields,
+        adminMode,
+        sitesData,
+        loadConfig,
+        saveAllChanges,
+        showSection,
+        showToast,
+        addHook,
+        apiRequest
+    };
+    </script>
+
+
+    </body>
+</html>
